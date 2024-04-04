@@ -55,7 +55,7 @@ with col2:
     with messages_container:
       # st.chat_message(sender).write(message)
       st.markdown(f'''
-        <div style="font-size: 8pt !important; padding: 2px 8px; background-color: { '#F2F2F2' if sender == 'User' else 'None' };">
+        <div style="font-size: 8px !important; padding: 2px 8px; background-color: { '#F2F2F2' if sender == 'User' else 'None' };">
           { message }
         </div>
       ''', unsafe_allow_html=True)
