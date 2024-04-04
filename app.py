@@ -47,17 +47,15 @@ with col2:
     
   # Create a container for the chat messages
   chat_container = st.container()
-    
+  messages_container = st.container(height=300)
+  
   # Function to add a new message to the chat
   def add_message(sender, message):
-    with chat_container:
+    with messages_container:
       st.markdown(f"**{sender}:** {message}")
-
-  messages = st.container(height=300)
-  
+ 
   # Get user input
-  user_input = st.chat_input("What can I help you with?", 
-                             args={"style": "background-color: #f0f0f0; border: 2px solid #ccc; padding: 10px; font-size: 16px; width: 100%;"},)
+  user_input = st.chat_input("What can I help you with?")
     
   # Add user message to the chat
   if user_input:
