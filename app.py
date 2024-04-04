@@ -83,7 +83,7 @@ with col2:
   
   # Function to add a new message to the chat
   def add_message(sender, message):
-    with messages_container:
+    with chat_container:
       st.chat_message(sender).write(message)
       # st.markdown(f'''
       #   <div style="font-size: 8px !important; padding: 2px 8px; background-color: { '#F2F2F2' if sender == 'User' else 'None' };">
