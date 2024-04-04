@@ -7,7 +7,15 @@ def wide_space_default():
 
 wide_space_default()
 
-st.title("Dive Deep with Easy Queries")
+st.markdown("""
+<style>
+.big-font {
+    font-size:20px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<p class="big-font">Dive Deep with Easy Queries</p>', unsafe_allow_html=True)
 
 config = {
     "version": "v1",
