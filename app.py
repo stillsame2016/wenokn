@@ -70,7 +70,7 @@ config = {
 map_1 = KeplerGl(height=400)
 map_1.config = config
 
-col1, col2 = st.columns([7, 3])
+col1, col2 = st.columns([6, 4])
 with col1:
   keplergl_static(map_1)
 with col2:
