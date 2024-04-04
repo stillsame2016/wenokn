@@ -11,6 +11,7 @@ st.markdown("""
 <style>
 .big-font {
     font-size:20px !important;
+    font-weight: bold;
 }
 </style>
 """, unsafe_allow_html=True)
