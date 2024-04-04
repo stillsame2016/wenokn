@@ -140,4 +140,4 @@ with col2:
         data = json.loads(data)
 
     if not data["is_request_data"]:
-        add_message("assistant", f"{response.text}")
+        add_message("assistant", f"{data['alternative_answer']}")
