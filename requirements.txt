@@ -1,3 +1,4 @@
 streamlit
 streamlit-keplergl
+google-generativeai
 pandas
