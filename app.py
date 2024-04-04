@@ -84,13 +84,15 @@ with col2:
   # Function to add a new message to the chat
   def add_message(sender, message, processing=False):
     with chat_container:
-      st.chat_message(sender).write(message)
-      with st.spinner(f"""We're currently processing your request:
-                            **{message}**
-                         Depending on the complexity of the query and the volume of data, 
-                         this may take a moment. We appreciate your patience."""):
-         time.sleep(600)
- 
+      if processing:
+          with st.spinner(f"""We're currently processing your request:
+                                **{message}**
+                             Depending on the complexity of the query and the volume of data, 
+                             this may take a moment. We appreciate your patience."""):
+             time.sleep(600)
+      else: 
+         st.chat_message(sender).write(message)
+          
   # Get user input
   user_input = st.chat_input("What can I help you with?")
     
@@ -147,4 +149,5 @@ with col2:
         add_message("assistant", f"{data['alternative_answer']}")
     else:
         add_message("assistant", f"{data['request']}", processing=True)
+        
 
