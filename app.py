@@ -9,7 +9,21 @@ wide_space_default()
 
 st.write("Dive Deep with Easy Queries")
 
+config = {
+    "version": "v1",
+    "config": {
+        "mapState": {
+            "bearing": 0,
+            "latitude": 52.52,
+            "longitude": 13.4,
+            "pitch": 0,
+            "zoom": 11,
+        }
+    },
+}
+
 map_1 = KeplerGl(height=400)
+map_1.config = config
 
 col1, col2 = st.columns([7, 3])
 with col1:
