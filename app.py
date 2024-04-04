@@ -53,7 +53,7 @@ with col2:
   def add_message(sender, message):
     with messages_container:
       # st.chat_message(sender).write(message)
-      st.write(message, disable_html=True)
+      st.markdown(message, disable_html=True)
  
   # Get user input
   user_input = st.chat_input("What can I help you with?")
