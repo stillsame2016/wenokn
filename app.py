@@ -114,7 +114,8 @@ with col2:
        knowledge database which contains the data for buildings, power stations, underground
        tanks, rivers, dams and natural hazard events.
        
-       If they are requesting for data, extract the concise request from the user's input.
+       If they are requesting for data, extract the concise request from the user's input. 
+       Rephrase the user's request in a simple and format way.
 
        Please answer with a valid JSON string, including the following three fields:
        The boolean field "is_request_data" indicates whether the user is looking for data or not.
