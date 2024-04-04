@@ -86,7 +86,7 @@ with col2:
     with chat_container:
       st.chat_message(sender).write(message)
       with st.spinner(f"""We're currently processing your request:
-                            **{data['request']}**
+                            **{message}**
                          Depending on the complexity of the query and the volume of data, 
                          this may take a moment. We appreciate your patience."""):
          time.sleep(600)
