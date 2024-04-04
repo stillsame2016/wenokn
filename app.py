@@ -54,7 +54,7 @@ with col2:
   def add_message(sender, message):
     with messages_container:
       # st.chat_message(sender).write(message)
-      st.markdown(f'{escape(message)}')
+      st.write(f'{escape(message)}')
  
   # Get user input
   user_input = st.chat_input("What can I help you with?")
