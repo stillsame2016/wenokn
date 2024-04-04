@@ -54,7 +54,8 @@ with col2:
       st.markdown(f"**{sender}:** {message}")
 
   # Get user input
-  user_input = st.chat_input("What can I help you with?")
+  user_input = st.chat_input("What can I help you with?", 
+                             args={"style": "background-color: #f0f0f0; border: 2px solid #ccc; padding: 10px; font-size: 16px; width: 100%;"},)
     
   # Add user message to the chat
   if user_input:
