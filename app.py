@@ -10,6 +10,10 @@ GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
+# Add a Chat history object to Streamlit session state
+if "chat" not in st.session_state:
+    st.session_state.chat = model.start_chat(history=[])
+
 safe = [
     {
         "category": "HARM_CATEGORY_HARASSMENT",
