@@ -127,6 +127,17 @@ with col2:
        from the user's request, ask the user for further clarification.
        """
 
-    response = st.session_state.chat.send_message(query, safety_settings=safe, )
-      
-    add_message("assistant", f"{response.text}")
+    response = st.session_state.chat.send_message(query, safety_settings=safe)
+
+    data = response.text
+    # print('-' * 70, 'raw data')
+    # print(data)
+
+    if data.startswith('```json'):
+        json_part = data.split("\n", 1)[1].rsplit("\n", 1)[0]
+        data = json.loads(json_part)
+    else:
+        data = json.loads(data)
+
+    if not data["is_request_data"]:
+        add_message("assistant", f"{response.text}")
