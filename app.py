@@ -7,7 +7,7 @@ def wide_space_default():
 
 wide_space_default()
 
-st.write("Dive Deep with Easy Queries")
+st.title("Dive Deep with Easy Queries")
 
 config = {
     "version": "v1",
