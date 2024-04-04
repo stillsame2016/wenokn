@@ -45,20 +45,20 @@ with col2:
   #  st.write(prompt)
   st.markdown("### Chat Interface")
     
-    # Create a container for the chat messages
-    chat_container = st.container()
+  # Create a container for the chat messages
+  chat_container = st.container()
     
-    # Function to add a new message to the chat
-    def add_message(sender, message):
-        with chat_container:
-            st.markdown(f"**{sender}:** {message}")
+  # Function to add a new message to the chat
+  def add_message(sender, message):
+    with chat_container:
+      st.markdown(f"**{sender}:** {message}")
 
-    # Get user input
-    user_input = st.text_input("Enter your message", key="user_input")
+  # Get user input
+  user_input = st.text_input("Enter your message", key="user_input")
     
-    # Add user message to the chat
-    if user_input:
-        add_message("User", user_input)
-        # Simulate a response from the chat interface
-        add_message("Bot", "This is a simulated response from the chat interface.")
-        st.text_input("Enter your message", key="user_input", value="")
+  # Add user message to the chat
+  if user_input:
+    add_message("User", user_input)
+    # Simulate a response from the chat interface
+    add_message("Bot", "This is a simulated response from the chat interface.")
+    st.text_input("Enter your message", key="user_input", value="")
