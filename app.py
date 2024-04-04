@@ -84,12 +84,12 @@ with col2:
   # Function to add a new message to the chat
   def add_message(sender, message):
     with messages_container:
-      # st.chat_message(sender).write(message)
-      st.markdown(f'''
-        <div style="font-size: 8px !important; padding: 2px 8px; background-color: { '#F2F2F2' if sender == 'User' else 'None' };">
-          { message }
-        </div>
-      ''', unsafe_allow_html=True)
+      st.chat_message(sender).write(message)
+      # st.markdown(f'''
+      #   <div style="font-size: 8px !important; padding: 2px 8px; background-color: { '#F2F2F2' if sender == 'User' else 'None' };">
+      #     { message }
+      #   </div>
+      # ''', unsafe_allow_html=True)
  
   # Get user input
   user_input = st.chat_input("What can I help you with?")
