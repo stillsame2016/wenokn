@@ -16,7 +16,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<p class="big-font">Dive Deep with Easy Queries</p>', unsafe_allow_html=True)
+st.markdown('<p class="big-font">WEN-OKN: Dive Deep with Easy Queries</p>', unsafe_allow_html=True)
 
 config = {
     "version": "v1",
