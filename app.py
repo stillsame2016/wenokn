@@ -10,4 +10,4 @@ col1, col2 = st.columns([3, 1])
 with col1:
   keplergl_static(map_1)
 with col2:
-  st.header("Chat with WEN-OKN")
+  st.write("Chat with WEN-OKN")
