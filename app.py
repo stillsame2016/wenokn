@@ -85,11 +85,12 @@ with col2:
   def add_message(sender, message, processing=False):
     with chat_container:
       if processing:
-          with st.spinner(f"""We're currently processing your request:
-                                **{message}**
-                             Depending on the complexity of the query and the volume of data, 
-                             this may take a moment. We appreciate your patience."""):
-             time.sleep(600)
+          with st.chat_message("assistant"):
+              with st.spinner(f"""We're currently processing your request:
+                                    **{message}**
+                                 Depending on the complexity of the query and the volume of data, 
+                                 this may take a moment. We appreciate your patience."""):
+                 time.sleep(600)
       else: 
          st.chat_message(sender).write(message)
           
