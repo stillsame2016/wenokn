@@ -47,6 +47,14 @@ with col2:
     
   # Create a container for the chat messages
   chat_container = st.container()
+  with input_container:
+    st.markdown(
+            """
+            <div style="position: fixed; bottom: 0; left: 0; right: 0; padding: 10px; background-color: white;">
+                <input type="text" id="user_input" style="width: 100%;" placeholder="Enter your message" />
+            </div>
+            """,
+            unsafe_allow_html=True)
     
   # Function to add a new message to the chat
   def add_message(sender, message):
