@@ -1,19 +1,11 @@
 import streamlit as st
 from streamlit_keplergl import keplergl_static
 from keplergl import KeplerGl
-import pandas as pd
 
-df = pd.DataFrame(
-    {
-        "City": ["San Francisco", "San Jose", "Palo Alto"],
-        "Latitude": [37.77, 37.33, 37.44],
-        "Longitude": [-122.43, -121.89, -122.14],
-    }
-)
+st.write("This is a kepler.gl map in streamlit")
 
-st.dataframe(df.head())
-
-st.write("This is a kepler.gl map with data input in streamlit")
+map_1 = KeplerGl(height=400)
+keplergl_static(map_1)
 
 map_1 = KeplerGl(height=400)
 map_1.add_data(
