@@ -7,7 +7,7 @@ def wide_space_default():
 
 wide_space_default()
 
-st.write("Complex Research, Made Easy")
+st.write("Dive Deep with Easy Queries")
 
 map_1 = KeplerGl(height=400)
 
