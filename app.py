@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_keplergl import keplergl_static
 from keplergl import KeplerGl
 from html import escape
+import json
 
 import google.generativeai as genai
 import requests
