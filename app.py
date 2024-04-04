@@ -107,7 +107,10 @@ with col2:
        {user_input}
        [--- End ---]
 
-       Your main job is to determine if the user is requesting for data from the WEN-OKN knowledge database. 
+       Your main job is to determine if the user is requesting for data from the WEN-OKN 
+       knowledge database which contains the data for buildings, power stations, underground
+       tanks, rivers, dams and natural hazard events.
+       
        If they are requesting for data, extract the concise request from the user's input.
 
        Please answer with a valid JSON string, including the following three fields:
