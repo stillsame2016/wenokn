@@ -55,7 +55,7 @@ with col2:
     with messages_container:
       # st.chat_message(sender).write(message)
       st.markdown(f'''
-        <div style="font-size:11pt !important;">
+        <div style="font-size:11pt !important; background-color: lightgray;">
           { message }
         </div>
       ''', unsafe_allow_html=True)
