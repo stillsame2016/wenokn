@@ -148,9 +148,9 @@ with col2:
         add_message("assistant", f"{data['alternative_answer']}")
     else:
         add_message("assistant", f"{data['request']}")
-
-        with st.spinner(f"""We're currently processing your request:
-                **{data['request']}**
-             Depending on the complexity of the query and the volume of data, 
-             this may take a moment. We appreciate your patience."""):
-            time.sleep(60)
+        with chat_container:
+            with st.spinner(f"""We're currently processing your request:
+                    **{data['request']}**
+                 Depending on the complexity of the query and the volume of data, 
+                 this may take a moment. We appreciate your patience."""):
+                time.sleep(600)
