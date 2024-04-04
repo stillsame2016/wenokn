@@ -39,4 +39,4 @@ with col1:
   keplergl_static(map_1)
 with col2:
    if prompt := st.chat_input("What can I do for you?"):
-     st.markedown(prompt)
+     st.write(prompt)
