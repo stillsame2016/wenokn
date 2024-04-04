@@ -2,13 +2,13 @@ import streamlit as st
 from streamlit_keplergl import keplergl_static
 from keplergl import KeplerGl
 
-st.markdown(" <style> div[class^='block-container'] { padding-top: 2rem; } </style> ", 
-            unsafe_allow_html=True)
-
 def wide_space_default():
   st.set_page_config(layout="wide")
 
 wide_space_default()
+
+st.markdown(" <style> div[class^='block-container'] { padding-top: 2rem; } </style> ", 
+            unsafe_allow_html=True)
 
 st.markdown("""
 <style>
