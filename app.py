@@ -17,9 +17,6 @@ st.markdown("""
     font-size:20px !important;
     font-weight: bold;
 }
-.message {
-    font-size:12px !important; 
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -57,7 +54,11 @@ with col2:
   def add_message(sender, message):
     with messages_container:
       # st.chat_message(sender).write(message)
-      st.markdown(f'<div style="font-size:11pt !important;">{ message }</div>', unsafe_allow_html=True)
+      st.markdown(f'''
+        <div style="font-size:11pt !important;">
+          { message }
+        </div>
+      ''', unsafe_allow_html=True)
  
   # Get user input
   user_input = st.chat_input("What can I help you with?")
