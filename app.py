@@ -80,17 +80,16 @@ with col2:
     
   # Create a container for the chat messages
   chat_container = st.container(height=350)
-  # messages_container = st.container(height=350)
   
   # Function to add a new message to the chat
-  def add_message(sender, message):
+  def add_message(sender, message, processing=False):
     with chat_container:
       st.chat_message(sender).write(message)
-      # st.markdown(f'''
-      #   <div style="font-size: 8px !important; padding: 2px 8px; background-color: { '#F2F2F2' if sender == 'User' else 'None' };">
-      #     { message }
-      #   </div>
-      # ''', unsafe_allow_html=True)
+      with st.spinner(f"""We're currently processing your request:
+        **{data['request']}**
+     Depending on the complexity of the query and the volume of data, 
+     this may take a moment. We appreciate your patience."""):
+    time.sleep(600)
  
   # Get user input
   user_input = st.chat_input("What can I help you with?")
@@ -147,10 +146,5 @@ with col2:
     if not data["is_request_data"]:
         add_message("assistant", f"{data['alternative_answer']}")
     else:
-        add_message("assistant", f"{data['request']}")
-        with chat_container:
-            with st.spinner(f"""We're currently processing your request:
-                    **{data['request']}**
-                 Depending on the complexity of the query and the volume of data, 
-                 this may take a moment. We appreciate your patience."""):
-                time.sleep(600)
+        add_message("assistant", f"{data['request']}", processing=True)
+
