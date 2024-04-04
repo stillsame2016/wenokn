@@ -2,6 +2,11 @@ import streamlit as st
 from streamlit_keplergl import keplergl_static
 from keplergl import KeplerGl
 
+def wide_space_default():
+  st.set_page_config(layout=“wide”)
+
+wide_space_default()
+
 st.write("Complex Research, Made Easy")
 
 map_1 = KeplerGl(height=400)
