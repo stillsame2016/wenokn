@@ -38,4 +38,4 @@ col1, col2 = st.columns([7, 3])
 with col1:
   keplergl_static(map_1)
 with col2:
-  st.write("Chat with WEN-OKN")
+  st.write("sdasjd shjadjhsad sjdhasjd asddahjd asdjasd sdasdjasd sadasjd sadsahdhs")
