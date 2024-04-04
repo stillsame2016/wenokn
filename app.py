@@ -52,7 +52,7 @@ with col2:
   # Function to add a new message to the chat
   def add_message(sender, message):
     with messages_container:
-      st.chat_message(sender).markdown(message)
+      st.chat_message(sender).write(message)
  
   # Get user input
   user_input = st.chat_input("What can I help you with?")
