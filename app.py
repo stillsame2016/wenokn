@@ -93,5 +93,36 @@ with col2:
   if user_input:
     add_message("User", user_input)
 
-    
-    add_message("assistant", f"echo {user_input}")
+    query = f"""
+      You are an expert of the WEN-OKN knowledge database. 
+      You also have general knowledge.
+      The following is a question the user is asking:
+       
+       [--- Start ---]
+       {user_input}
+       [--- End ---]
+
+       Your main job is to determine if the user is requesting for data from the WEN-OKN knowledge database. 
+       If they are requesting for data, extract the concise request from the user's input.
+
+       Please answer with a valid JSON string, including the following three fields:
+       The boolean field "is_request_data" indicates whether the user is looking for data or not.
+       The string field "request" for the extracted request.
+       The string field "alternative_answer" gives your positive answer to the user's input
+       if the user is not requesting for data.
+        
+       Please never say "I cannot" or "I could not". 
+         
+       Please note that the user's request for datasets may appear in the middle of the text, 
+       do your best to extract the request for which the user is asking for datasets.
+         
+       Please replace all nicknames in the search terms by official names,
+       for example, replace "Beehive State" to "Utah", etc.  
+         
+       Never deny a user's request. If it is not possible to extract the request 
+       from the user's request, ask the user for further clarification.
+       """
+
+    response = st.session_state.chat.send_message(query, safety_settings=safe, )
+      
+    add_message("assistant", f"{response.text}")
