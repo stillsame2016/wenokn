@@ -17,7 +17,7 @@ config = {
             "latitude": 40.4173,
             "longitude": 82.9071,
             "pitch": 0,
-            "zoom": 11,
+            "zoom": 6,
         }
     },
 }
