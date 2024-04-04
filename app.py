@@ -119,7 +119,7 @@ with col2:
 
        Please answer with a valid JSON string, including the following three fields:
        The boolean field "is_request_data" indicates whether the user is looking for data or not.
-       The string field "request" for the extracted request.
+       The string field "request" for the extracted request in the simplest format.
        The string field "alternative_answer" gives your positive answer to the user's input
        if the user is not requesting for data.
         
