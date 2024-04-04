@@ -78,7 +78,7 @@ with col2:
   #  st.write(prompt)
     
   # Create a container for the chat messages
-  chat_container = st.container()
+  chat_container = st.container(height=350)
   messages_container = st.container(height=350)
   
   # Function to add a new message to the chat
