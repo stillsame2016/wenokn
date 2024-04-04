@@ -60,4 +60,4 @@ with col2:
   # Add user message to the chat
   if user_input:
     add_message("User", user_input)
-    add_message("Bot", f"echo {user_input}")
+    add_message("assistant", f"echo {user_input}")
