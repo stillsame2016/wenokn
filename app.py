@@ -115,7 +115,8 @@ with col2:
        tanks, rivers, dams and natural hazard events.
        
        If they are requesting for data, extract the concise request from the user's input. 
-       Rephrase the user's request in a simple and format way.
+       Rephrase the user's request in a simple and format way. Remove all the terms like "Please" etc.
+       Use the format like "Find ...".
 
        Please answer with a valid JSON string, including the following three fields:
        The boolean field "is_request_data" indicates whether the user is looking for data or not.
