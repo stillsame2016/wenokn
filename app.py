@@ -145,3 +145,5 @@ with col2:
 
     if not data["is_request_data"]:
         add_message("assistant", f"{data['alternative_answer']}")
+    else:
+        add_message("assistant", f"{data['request']}")
