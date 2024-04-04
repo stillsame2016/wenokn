@@ -13,7 +13,7 @@ df = pd.DataFrame(
 
 st.dataframe(df.head())
 
-st.write("This is a kepler.gl map with data input in streamlit")
+st.write("Complex Research, Made Easy")
 
 map_1 = KeplerGl(height=400)
 keplergl_static(map_1, center_map=True)
