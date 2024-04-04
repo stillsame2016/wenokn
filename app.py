@@ -35,7 +35,7 @@ config = {
     },
 }
 
-map_1 = KeplerGl(height=450)
+map_1 = KeplerGl(height=400)
 map_1.config = config
 
 col1, col2 = st.columns([7, 3])
@@ -47,7 +47,7 @@ with col2:
     
   # Create a container for the chat messages
   chat_container = st.container()
-  messages_container = st.container(height=300)
+  messages_container = st.container(height=350)
   
   # Function to add a new message to the chat
   def add_message(sender, message):
