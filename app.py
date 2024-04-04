@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_keplergl import keplergl_static
 from keplergl import KeplerGl
+from html import escape
 
 def wide_space_default():
   st.set_page_config(layout="wide")
@@ -53,7 +54,7 @@ with col2:
   def add_message(sender, message):
     with messages_container:
       # st.chat_message(sender).write(message)
-      st.markdown(message, disable_html=True)
+      st.write(f"{escape(message)}")
  
   # Get user input
   user_input = st.chat_input("What can I help you with?")
