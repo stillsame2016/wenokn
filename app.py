@@ -15,7 +15,7 @@ config = {
         "mapState": {
             "bearing": 0,
             "latitude": 40.4173,
-            "longitude": 82.9071,
+            "longitude": -82.9071,
             "pitch": 0,
             "zoom": 6,
         }
