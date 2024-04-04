@@ -6,6 +6,7 @@ import json
 
 import google.generativeai as genai
 import requests
+import time
 
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -148,9 +149,8 @@ with col2:
     else:
         add_message("assistant", f"{data['request']}")
 
-        with st.spinner(f"""We're currently conducting a search using the 
-                               terms '{" ".join(data['search_terms'])}'.
-                               After completing the search, 
-                               we'll carefully assess the results to determine 
-                               the datasets that best match your semantic criteria. 
-                               Your patience is appreciated."""):
+        with st.spinner(f"""We're currently processing your request:
+                **{data['request']}**
+             Depending on the complexity of the query and the volume of data, 
+             this may take a moment. We appreciate your patience."""):
+            time.sleep(60)
