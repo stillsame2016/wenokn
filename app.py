@@ -147,3 +147,10 @@ with col2:
         add_message("assistant", f"{data['alternative_answer']}")
     else:
         add_message("assistant", f"{data['request']}")
+
+        with st.spinner(f"""We're currently conducting a search using the 
+                               terms '{" ".join(data['search_terms'])}'.
+                               After completing the search, 
+                               we'll carefully assess the results to determine 
+                               the datasets that best match your semantic criteria. 
+                               Your patience is appreciated."""):
