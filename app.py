@@ -38,5 +38,7 @@ col1, col2 = st.columns([7, 3])
 with col1:
   keplergl_static(map_1)
 with col2:
-   if prompt := st.chat_input("What can I do for you?"):
-     st.write(prompt)
+  st.write('Display Information')
+  
+if prompt := st.chat_input("What can I do for you?"):
+  st.write(prompt)
