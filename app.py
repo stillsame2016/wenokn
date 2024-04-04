@@ -11,7 +11,7 @@ st.write("Complex Research, Made Easy")
 
 map_1 = KeplerGl(height=400)
 
-col1, col2 = st.columns([3, 1])
+col1, col2 = st.columns([6, 4])
 with col1:
   keplergl_static(map_1)
 with col2:
