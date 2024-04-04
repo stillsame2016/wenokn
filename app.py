@@ -54,7 +54,7 @@ with col2:
       st.markdown(f"**{sender}:** {message}")
 
   # Get user input
-  user_input = st.text_input("What can I help you with?")
+  user_input = st.chat_input("What can I help you with?")
     
   # Add user message to the chat
   if user_input:
