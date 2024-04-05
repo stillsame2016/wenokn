@@ -92,7 +92,7 @@ with col2:
                                  this may take a moment. We appreciate your patience."""):
                                      
                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
-                 st.code(response.text)
+                 st.markdown(f"<div style='white-space: pre;'>{response.text}</div>", unsafe_allow_html=True)
                  time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
