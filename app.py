@@ -102,24 +102,29 @@ with col2:
     add_message("User", user_input)
 
     query = f"""
-      You are an expert of the WEN-OKN knowledge database. It only contains the data for buildings, 
-      power stations and underground storage tanks in Ohio.
+      You are an expert of the WEN-OKN knowledge database. 
+      
+      The WEN-OKN knowledge database only supports the data for buildings, power stations 
+      and underground storage tanks in Ohio.
+      
       You also have general knowledge.
+      
       The following is a question the user is asking:
        
        [--- Start ---]
        {user_input}
        [--- End ---]
 
-       Your main job is to determine if the user is requesting for data in the scape of the WEN-OKN 
+       Your main job is to determine if the user is requesting for data in the scope of the WEN-OKN 
        knowledge database.
        
-       If they are requesting for data, extract the concise request from the user's input. 
-       Rephrase the user's request in a simple and format way. Remove all the terms like "Please" etc.
-       Use the format like "Find ...".
+       If they are requesting for data in the scope of the WEN-OKN knowledge database, then extract 
+       the concise request from the user's input. Rephrase the user's request in a simple and format
+       way. Remove all the terms like "Please" etc. Use the format like "Find ...".
 
        Please answer with a valid JSON string, including the following three fields:
-       The boolean field "is_request_data" indicates whether the user is looking for data or not.
+       The boolean field "is_request_data" indicates whether the user is looking for data in the scope 
+       of the WEN-OKN knowledge database or not.
        The string field "request" for the extracted request in the simplest format.
        The string field "alternative_answer" gives your positive answer to the user's input
        if the user is not requesting for data.
