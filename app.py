@@ -100,9 +100,10 @@ with col2:
                                   Identified potential relevant concepts and currently crafting a query. 
                                   Your patience is appreciated as we work on this task.
                                 """):  
+                   st.markdown("**Potential Relevant Entities:**")
                    for concept in concepts:
                        if concept['is_relevant']:
-                           st.markdown(f"{concept['entity']}")
+                           st.markdown(f"- {concept['entity']}")
                    time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
