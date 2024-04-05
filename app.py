@@ -102,7 +102,7 @@ with col2:
                   with placeholder.container():                      
                     for concept in concepts:
                       if concept['is_relevant']:
-                        st.markdown(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
+                        st.write(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
                   time.sleep(10)
                   placeholder.empty()
       else: 
