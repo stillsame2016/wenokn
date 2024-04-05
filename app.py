@@ -92,15 +92,19 @@ with col2:
                               this may take a moment. We appreciate your patience."""):
                                      
             response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
-            data = response.text.replace('\\n', '\n')
-
+            data = response.text.replace('\\n', '\n').replace('\\"', '"')
             if data.startswith("\"```sparql"):
               start_index = data.find("```sparql") + len("```sparql")
               end_index = data.find("```", start_index)
               sparql_query = data[start_index:end_index].strip()
-              st.code(sparql_query)
-            else:                      
-              st.code(data)
+            elif data.startswith("\"```code"):
+              start_index = data.find("```code") + len("```code")
+              end_index = data.find("```", start_index)
+              sparql_query = data[start_index:end_index].strip()
+            else:
+              sparql_query = data
+            
+            st.code(sparql_query)
             time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
