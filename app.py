@@ -105,7 +105,7 @@ with col2:
                     for concept in concepts:
                       if concept['is_relevant']:
                         st.write(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
-                   time.sleep(10)
+                   time.sleep(100)
                    placeholder.empty()
       else: 
          st.chat_message(sender).write(message)
