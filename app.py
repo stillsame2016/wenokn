@@ -94,7 +94,7 @@ with col2:
                                      
                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
                  concepts = json.loads(response.text)
-                 for concept : concepts:
+                 for concept in concepts:
                     if concept['is_relevant']:
                        relevant_concepts = f"""
                             - concept['entity']
