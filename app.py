@@ -101,7 +101,7 @@ with col2:
                           """
               if concepts:
                 with st.spinner(f"{relevant_concepts}"):
-                time.sleep(10)
+                  time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
           
