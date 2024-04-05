@@ -98,10 +98,13 @@ with col2:
               if concepts:
                 with st.spinner(f"""Collected the following possible relevant concepts and
                                     working on generating a query ..."""):
-                  for concept in concepts:
-                    if concept['is_relevant']:
-                      st.markdown(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
+                  placeholder = st.empty()
+                  with placeholder.container():                      
+                    for concept in concepts:
+                      if concept['is_relevant']:
+                        st.markdown(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
                   time.sleep(10)
+                  placeholder.empty()
       else: 
          st.chat_message(sender).write(message)
           
