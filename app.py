@@ -90,7 +90,8 @@ with col2:
                                     **{message}**
                                  Depending on the complexity of the query and the volume of data, 
                                  this may take a moment. We appreciate your patience."""):
-                 time.sleep(600)
+                 time.sleep(10)
+                 st.markdown("Done")
       else: 
          st.chat_message(sender).write(message)
           
