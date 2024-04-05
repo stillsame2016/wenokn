@@ -93,7 +93,8 @@ with col2:
                                      
                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
                  concepts = json.loads(response.text)
-                 st.markdown(concepts)
+              with st.spinner(f"{concepts}")
+                 time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
           
