@@ -95,9 +95,9 @@ with col2:
             data = response.text.replace('\\n', '\n')
 
             if data.startswith("\"```sparql"):
-              start_index = api_response.find("```sparql") + len("```sparql")
-              end_index = api_response.find("```", start_index)
-              sparql_query = api_response[start_index:end_index].strip()
+              start_index = data.find("```sparql") + len("```sparql")
+              end_index = data.find("```", start_index)
+              sparql_query = data[start_index:end_index].strip()
               st.code(sparql_query)
             else:                      
               st.code(data)
