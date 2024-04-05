@@ -101,7 +101,7 @@ with col2:
                    time.sleep(2)
                    placeholder = st.empty()
                    with placeholder.container():  
-                    st.json(concepts)
+                    # st.json(concepts)
                     for concept in concepts:
                       if concept['is_relevant']:
                         st.write(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
