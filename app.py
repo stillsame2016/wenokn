@@ -102,11 +102,7 @@ with col2:
     add_message("User", user_input)
 
     query = f"""
-      You are an expert of the WEN-OKN knowledge database. 
-      
-      The WEN-OKN knowledge database only supports the data for buildings, power stations 
-      and underground storage tanks in Ohio.
-      
+      You are an expert of the WEN-OKN knowledge database.       
       You also have general knowledge.
       
       The following is a question the user is asking:
@@ -126,12 +122,16 @@ with col2:
        
        The boolean field "is_request_data" is true if the user is requesting to get data from
        the WEN-OKN knowledge database, otherwise "is_request_data" is false. If the user is asking 
-       what data or data type you have, set "is_request_data" to be false.
+       what data or data types you have, set "is_request_data" to be false.
        
        The string field "request" for the extracted request in the simplest format.
        
        The string field "alternative_answer" gives your positive answer to the user's input
-       if the user is not requesting for data.
+       if the user is not requesting for data. If the user is asking what data or data types you have,
+       please answer it based on this description:
+
+       The WEN-OKN knowledge database contains the locations of buildings, power stations 
+       and underground storage tanks in Ohio.
         
        Please never say "I cannot" or "I could not". 
          
