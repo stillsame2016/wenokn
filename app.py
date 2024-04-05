@@ -102,7 +102,7 @@ with col2:
                                 """):  
                    for concept in concepts:
                        if concept['is_relevant']:
-                           st.markdown(f"- {concept['entity']}")
+                           st.markdown(f"{concept['entity']}")
                    time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
