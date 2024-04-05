@@ -96,11 +96,11 @@ with col2:
                  concepts = json.loads(response.text)
                  for concept in concepts:
                     if concept['is_relevant']:
-                       relevant_concepts = f"""
+                       relevant_concepts = f"""{relevant_concepts}
                             - {concept['entity']}
                           """
-              if concepts:
-                with st.spinner(f"{relevant_concepts}"):
+              if relevant_concepts:
+                with st.spinner(f"{} {relevant_concepts}"):
                   time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
