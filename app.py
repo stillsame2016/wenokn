@@ -100,15 +100,7 @@ with col2:
                                   Identified potential relevant concepts and currently crafting a query. 
                                   Your patience is appreciated as we work on this task.
                                 """):  
-                   time.sleep(2)
-                   placeholder = st.empty()
-                   with placeholder.container():  
-                    # st.json(concepts)
-                    for concept in concepts:
-                      if concept['is_relevant']:
-                        st.write(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
-                   time.sleep(100)
-                   placeholder.empty()
+                   time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
           
