@@ -97,7 +97,7 @@ with col2:
                  for concept in concepts:
                     if concept['is_relevant']:
                        relevant_concepts = f"""
-                            - concept['entity']
+                            - {concept['entity']}
                           """
               if concepts:
                 with st.spinner(f"{relevant_concepts}"):
