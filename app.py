@@ -96,15 +96,16 @@ with col2:
                  concepts = json.loads(response.text)
                                      
               if concepts:
-                placeholder = st.empty()
-                with placeholder.container():   
-                  with st.spinner(f"""Collected the following possible relevant concepts and
-                                    working on generating a query ..."""):                   
+                with st.spinner(f"""Collected the following possible relevant concepts and
+                                    working on generating a query ..."""):  
+                   time.sleep(2)
+                   placeholder = st.empty()
+                   with placeholder.container():   
                     for concept in concepts:
                       if concept['is_relevant']:
                         st.write(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
-                    time.sleep(10)
-                    placeholder.empty()
+                   time.sleep(10)
+                   placeholder.empty()
       else: 
          st.chat_message(sender).write(message)
           
