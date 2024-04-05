@@ -92,7 +92,7 @@ with col2:
                               this may take a moment. We appreciate your patience."""):
                                      
             response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
-            data = response.text
+            data = response.text.replace('\\n', '\n')
             st.write(f"data.startswith('```sparql'): {data.startswith('```sparql')}")
             # if data.startswith('"```sparql'):
             #   data = data.split("\n", 1)[1].rsplit("\n", 1)[0] 
