@@ -86,34 +86,14 @@ with col2:
     with chat_container:
       if processing:
           with st.chat_message("assistant"):
-              concepts = None
-              relevants = None
               with st.spinner(f"""We're currently processing your request:
                                     **{message}**
                                  Depending on the complexity of the query and the volume of data, 
                                  this may take a moment. We appreciate your patience."""):
                                      
                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
-                 concepts = json.loads(response.text)
-                                     
-              if concepts:
-                with st.spinner(f"""
-                                  Identified potential relevant concepts and currently crafting a query. 
-                                  Your patience is appreciated as we work on this task.
-                                """):  
-                   st.markdown("**Potentially Related Items:**")
-                   relevants = []
-                   for concept in concepts:
-                       if concept['is_relevant']:
-                           st.markdown(f"- {concept['entity']}")
-                           relevants.append(concept)
-                   # st.markdown(concepts)
-                   time.sleep(10)
-        
-              if relevants:
-                with st.spinner("Issuing query"):
-                    time.sleep(10)
-        
+                 st.markdown(response.text)
+                 time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
           
