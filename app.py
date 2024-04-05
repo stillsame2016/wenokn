@@ -100,7 +100,7 @@ with col2:
                                     working on generating a query ..."""):
                   for concept in concepts:
                     if concept['is_relevant']:
-                      st.write(f"<li>{concept['entity']}</li>")
+                      st.markdown(f"<li>{concept['entity']}</li>", unsafe_allow_html=True)
                   time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
