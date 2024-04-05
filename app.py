@@ -87,6 +87,7 @@ with col2:
       if processing:
           with st.chat_message("assistant"):
               concepts = None
+              relevants = None
               with st.spinner(f"""We're currently processing your request:
                                     **{message}**
                                  Depending on the complexity of the query and the volume of data, 
@@ -100,12 +101,19 @@ with col2:
                                   Identified potential relevant concepts and currently crafting a query. 
                                   Your patience is appreciated as we work on this task.
                                 """):  
-                   st.markdown("**Potential Relevant Entities:**")
+                   st.markdown("**Potentially Related Items:**")
+                   relevants = []
                    for concept in concepts:
                        if concept['is_relevant']:
                            st.markdown(f"- {concept['entity']}")
-                   st.markdown(concepts)
+                           relevants.append(concept)
+                   # st.markdown(concepts)
                    time.sleep(10)
+        
+              if relevants:
+                with st.spinner("Issuing query"):
+                    time.sleep(10)
+        
       else: 
          st.chat_message(sender).write(message)
           
