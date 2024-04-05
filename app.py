@@ -123,9 +123,13 @@ with col2:
        way. Remove all the terms like "Please" etc. Use the format like "Find ...".
 
        Please answer with a valid JSON string, including the following three fields:
+       
        The boolean field "is_request_data" is true if the user is requesting to get data from
-       the WEN-OKN knowledge database, otherwise "is_request_data" is false.
+       the WEN-OKN knowledge database, otherwise "is_request_data" is false. If the user is asking 
+       what data or data type you have, set "is_request_data" to be false.
+       
        The string field "request" for the extracted request in the simplest format.
+       
        The string field "alternative_answer" gives your positive answer to the user's input
        if the user is not requesting for data.
         
