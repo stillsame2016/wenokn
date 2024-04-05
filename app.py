@@ -102,7 +102,8 @@ with col2:
     add_message("User", user_input)
 
     query = f"""
-      You are an expert of the WEN-OKN knowledge database. 
+      You are an expert of the WEN-OKN knowledge database. It only contains the data for buildings, 
+      power stations and underground storage tanks in Ohio.
       You also have general knowledge.
       The following is a question the user is asking:
        
@@ -110,9 +111,8 @@ with col2:
        {user_input}
        [--- End ---]
 
-       Your main job is to determine if the user is requesting for data from the WEN-OKN 
-       knowledge database which contains the data for buildings, power stations, underground
-       tanks, rivers, dams and natural hazard events.
+       Your main job is to determine if the user is requesting for data in the scape of the WEN-OKN 
+       knowledge database.
        
        If they are requesting for data, extract the concise request from the user's input. 
        Rephrase the user's request in a simple and format way. Remove all the terms like "Please" etc.
