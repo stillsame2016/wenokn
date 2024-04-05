@@ -96,8 +96,10 @@ with col2:
                  concepts = json.loads(response.text)
                                      
               if concepts:
-                with st.spinner(f"""Collected the following possible relevant concepts and
-                                    working on generating a query ..."""):  
+                with st.spinner(f"""
+                                  Identified potential relevant concepts and currently crafting a query. 
+                                  Your patience is appreciated as we work on this task.
+                                """):  
                    time.sleep(2)
                    placeholder = st.empty()
                    with placeholder.container():  
