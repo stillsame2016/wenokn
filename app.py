@@ -85,15 +85,18 @@ with col2:
   def add_message(sender, message, processing=False):
     with chat_container:
       if processing:
-          with st.chat_message("assistant"):
-              with st.spinner(f"""We're currently processing your request:
+        with st.chat_message("assistant"):
+          with st.spinner(f"""We're currently processing your request:
                                     **{message}**
-                                 Depending on the complexity of the query and the volume of data, 
-                                 this may take a moment. We appreciate your patience."""):
+                              Depending on the complexity of the query and the volume of data, 
+                              this may take a moment. We appreciate your patience."""):
                                      
-                 response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
-                 st.markdown(f"<div style='white-space: pre;'>{response.text}</div>", unsafe_allow_html=True)
-                 time.sleep(10)
+            response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
+            data = response.text 
+            if data.startswith('```sparql'):
+              data = data.split("\n", 1)[1].rsplit("\n", 1)[0]                         
+            st.code(data)
+            time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
           
