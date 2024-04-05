@@ -86,7 +86,7 @@ with col2:
     with chat_container:
       if processing:
           with st.chat_message("assistant"):
-              relevant_concepts = None
+              concepts = None
               with st.spinner(f"""We're currently processing your request:
                                     **{message}**
                                  Depending on the complexity of the query and the volume of data, 
@@ -94,15 +94,11 @@ with col2:
                                      
                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
                  concepts = json.loads(response.text)
-                 relevant_concepts = ""
-                 for concept in concepts:
-                    if concept['is_relevant']:
-                       relevant_concepts = f"{relevant_concepts}{concept['entity']},"
-              if relevant_concepts:
-                with st.spinner(f"""
-                        Found the following relevant concepts: {relevant_concepts} 
-                        We are working on generating a query. Please wait...
-                    """):
+                                     
+              if concepts:
+                with st.spinner(f"""Collected the relevant concepts working on generating a query ..."""):
+                  for concept in concepts:
+                    st.markdown(f"- {concept['entity']}")
                   time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
