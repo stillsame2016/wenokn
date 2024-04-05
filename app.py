@@ -100,7 +100,7 @@ with col2:
                             - {concept['entity']}
                           """
               if relevant_concepts:
-                with st.spinner(f"{} {relevant_concepts}"):
+                with st.spinner(f"{relevant_concepts}"):
                   time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
