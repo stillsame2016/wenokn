@@ -76,7 +76,9 @@ map_1.config = config
 
 col1, col2 = st.columns([6, 4])
 with col1:  
-  keplergl_static(map_1)
+  map_container = st.empty()
+  map_container.write(map_1)  
+  # keplergl_static(map_1)
   # st.map(df)
 
 with col2:
