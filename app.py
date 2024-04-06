@@ -80,8 +80,8 @@ with col1:
   df = pd.DataFrame(
     {
         "City": ["San Francisco", "San Jose", "Palo Alto"],
-        "Latitude": [37.77, 37.33, 37.44],
-        "Longitude": [-122.43, -121.89, -122.14],
+        "latitude": [37.77, 37.33, 37.44],
+        "longitude": [-122.43, -121.89, -122.14],
     }
   )
 
