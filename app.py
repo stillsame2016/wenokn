@@ -126,8 +126,10 @@ with col2:
             map_2.config = config
             map_2.add_data(data=df, name="cities") 
 
-            with col1:
-              keplergl_static(map_2)
+            col1.empty()
+            col1.write("hello")
+            # with col1:
+            #   keplergl_static(map_2)
 
       else: 
          st.chat_message(sender).write(message)
