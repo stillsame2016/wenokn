@@ -93,7 +93,7 @@ with col1:
   # keplergl_static(map_1)
   map_instance = KeplerGl()
   html_buffer = StringIO()
-  map_instance.save_to_html(file_name=html_buffer.name, force_save=True)
+  map_instance.save_to_html(file_name=html_buffer, force_save=True)
   map_html = html_buffer.getvalue()
   st_keplergl = st.empty()
   st_keplergl.write(map_html, unsafe_allow_html=True)
