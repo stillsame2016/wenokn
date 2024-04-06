@@ -89,8 +89,9 @@ with col1:
   ) 
        
   # keplergl_static(map_1)
+  map_instance = keplergl.KeplerGl()
   st_keplergl = st.empty()
-  st_keplergl.write(map_1)
+  st_keplergl.write(map_instance)
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
