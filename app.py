@@ -73,11 +73,6 @@ config = {
 
 map_1 = KeplerGl(height=400)
 map_1.config = config
-
-dfs = []
-for df in dfs:
-    map_1.add_data(data=df, name=uuid.uuid1())
-   
  
 col1, col2 = st.columns([6, 4])
 with col1:  
@@ -125,7 +120,7 @@ with col2:
                     "longitude": [-122.43, -121.89, -122.14],
                 }
               )
-            dfs.add(df)                      
+                       
             # map_2 = KeplerGl(height=400)
             # map_2.config = config
             # map_2.add_data(data=df, name="cities") 
