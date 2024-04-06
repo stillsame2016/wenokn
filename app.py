@@ -81,7 +81,8 @@ for df in dfs:
  
 col1, col2 = st.columns([6, 4])
 with col1:  
-  keplergl_static(map_1)
+  # keplergl_static(map_1)
+  st.markdown(keplergl_static(map_1), unsafe_allow_html=True)
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
