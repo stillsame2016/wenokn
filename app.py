@@ -13,7 +13,7 @@ import pandas as pd
 from streamlit.components.v1 import html
 my_js = """
   var iframes = document.getElementsByTagName('iframe');
-  alert("=====>", iframes)
+  alert("=====>" + iframes.length)
   for (var i = 0; i < iframes.length; i++) {
     iframes[i].parentNode.removeChild(iframes[i]);
   }
