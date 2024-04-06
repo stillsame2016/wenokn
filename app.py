@@ -9,6 +9,8 @@ import requests
 import time
 
 import pandas as pd
+from io import StringIO
+
 
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -90,7 +92,8 @@ with col1:
        
   # keplergl_static(map_1)
   map_instance = KeplerGl()
-  map_html = map_instance.save_to_html(file_name=None)
+  html_buffer = StringIO()
+  map_html = map_instance.save_to_html(file_name=html_buffer)
   st_keplergl = st.empty()
   st_keplergl.write(map_html, unsafe_allow_html=True)
 
