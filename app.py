@@ -12,10 +12,11 @@ import pandas as pd
 
 from streamlit.components.v1 import html
 my_js = """
-  var iframes = document.getElementsByTagName('iframe');
-  alert("=====>" + iframes.length)
-  for (var i = 0; i < iframes.length; i++) {
-    iframes[i].parentNode.removeChild(iframes[i]);
+  var className = "keplergl-widget-container"
+  var divs = document.getElementsByClassName(className);
+  alert("=====>" + divs.length)
+  for (var i = 0; i < divs.length; i++) {
+    divs[i].parentNode.removeChild(divs[i]);
   }
 """
 
