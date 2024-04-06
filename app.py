@@ -76,11 +76,9 @@ map_1.config = config
  
 col1, col2 = st.columns([6, 4])
 with col1:  
-  f"""
-     <div id='test' style='display: none;'>
+     <div id='test' style='display: none; height: 0px'>
      { keplergl_static(map_1) }
      </div>
-  """
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
