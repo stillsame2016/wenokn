@@ -12,7 +12,7 @@ import pandas as pd
 
 from streamlit.components.v1 import html
 my_js = """
-  var className = "keplergl-widget-container"
+  var className = "keplergl-widget-container sc-kUQWMX KedTr"
   var divs = document.getElementsByClassName(className);
   alert("=====>" + divs.length)
   for (var i = 0; i < divs.length; i++) {
