@@ -123,7 +123,7 @@ with col2:
                     "longitude": [-122.43, -121.89, -122.14],
                 }
               )
-                       
+            st.session_state.wen_datasets.append(df)
             # map_2 = KeplerGl(height=400)
             # map_2.config = config
             # map_2.add_data(data=df, name="cities") 
