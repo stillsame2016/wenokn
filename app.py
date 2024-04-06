@@ -126,9 +126,8 @@ with col2:
             map_2.add_data(data=df, name="cities") 
 
             col1.empty()
-            col1.write(sparql_query)
-            # with col1:
-            #   keplergl_static(map_2)
+            with col1:
+              keplergl_static(map_2)
 
       else: 
          st.chat_message(sender).write(message)
