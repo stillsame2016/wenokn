@@ -1,6 +1,5 @@
 import streamlit as st
 from streamlit_keplergl import keplergl_static
-from streamlit_keplergl import keplergl_interactive
 from keplergl import KeplerGl
 from html import escape
 import json
@@ -10,7 +9,6 @@ import requests
 import time
 
 import pandas as pd
-from io import StringIO
 
 
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
@@ -92,12 +90,7 @@ with col1:
   ) 
        
   # keplergl_static(map_1)
-  map_instance = KeplerGl()
-  html_buffer = StringIO()
-  map_instance.save_to_html(file_name=html_buffer)
-  map_html = html_buffer.getvalue()
-  st_keplergl = st.empty()
-  st_keplergl.write(map_html, unsafe_allow_html=True)
+  st.map(df)
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
