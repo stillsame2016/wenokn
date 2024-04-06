@@ -8,6 +8,8 @@ import google.generativeai as genai
 import requests
 import time
 
+import pandas as pd
+
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
@@ -105,6 +107,15 @@ with col2:
               sparql_query = data
             
             st.code(sparql_query)
+
+            df = pd.DataFrame(
+                    {'City': ['Buenos Aires', 'Brasilia', 'Santiago', 'Bogota', 'Caracas'],
+                     'Latitude': [-34.58, -15.78, -33.45, 4.60, 10.48],
+                     'Longitude': [-58.66, -47.91, -70.66, -74.08, -66.86]})
+
+            map_1.add_data(data=df, name='cities')
+
+        
       else: 
          st.chat_message(sender).write(message)
           
