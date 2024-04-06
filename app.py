@@ -12,7 +12,13 @@ import pandas as pd
 
 from streamlit.components.v1 import html
 my_js = """
-    alert("Hola mundo");
+  var iframes = document.getElementsByTagName('iframe');
+  for (var i = 0; i < iframes.length; i++) {
+    if (iframes[i].id === iframeId) {
+      iframes[i].parentNode.removeChild(iframes[i]);
+      break;
+    }
+  }
 """
 
 # Wrapt the javascript as html code
