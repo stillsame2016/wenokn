@@ -10,6 +10,13 @@ import time
 import uuid
 import pandas as pd
 
+from streamlit.components.v1 import html
+my_js = """
+    alert("Hola mundo");
+"""
+
+# Wrapt the javascript as html code
+my_html = f"<script>{my_js}</script>"
 
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -110,7 +117,7 @@ with col2:
             
             st.code(sparql_query)
 
-            map_container.empty()
+            html(my_html)
 
             df = pd.DataFrame(
                 {
