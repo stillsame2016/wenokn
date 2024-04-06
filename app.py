@@ -87,7 +87,7 @@ with col2:
       if processing:
         with st.chat_message("assistant"):
           with st.spinner(f"""We're currently processing your request:
-                                    **{message}**
+                                    **{message}{'' if message.endswith('.') else '.'}**
                               Depending on the complexity of the query and the volume of data, 
                               this may take a moment. We appreciate your patience."""):
                                      
