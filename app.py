@@ -7,7 +7,7 @@ import json
 import google.generativeai as genai
 import requests
 import time
-
+import uuid
 import pandas as pd
 
 
@@ -71,15 +71,17 @@ config = {
     },
 }
 
-map_1 = KeplerGl(height=360)
+map_1 = KeplerGl(height=400)
 map_1.config = config
 
+dfs = []
+for df in dfs:
+    map_1.add_data(data=df, name=uuid.uuid1())
+   
+ 
 col1, col2 = st.columns([6, 4])
-map_container = None
 with col1:  
-  map_container = st.container(height=410)
-  with map_container:
-    keplergl_static(map_1)
+  keplergl_static(map_1)
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
@@ -122,9 +124,10 @@ with col2:
                     "longitude": [-122.43, -121.89, -122.14],
                 }
               )
-            map_2 = KeplerGl(height=400)
-            map_2.config = config
-            map_2.add_data(data=df, name="cities") 
+            dfs.add(df)                      
+            # map_2 = KeplerGl(height=400)
+            # map_2.config = config
+            # map_2.add_data(data=df, name="cities") 
         
 
       else: 
