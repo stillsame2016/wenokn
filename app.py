@@ -10,19 +10,6 @@ import time
 import uuid
 import pandas as pd
 
-from streamlit.components.v1 import html
-my_js = """
-  var divElements = document.getElementsByTagName("div");
-  alert(divElements.length)
-  if (divElements.length >= 2) {
-    var secondDiv = divElements[1];
-    secondDiv.parentNode.removeChild(secondDiv);
-  }
-"""
-
-# Wrapt the javascript as html code
-my_html = f"<script>{my_js}</script>"
-
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
@@ -121,8 +108,6 @@ with col2:
               sparql_query = data
             
             st.code(sparql_query)
-
-            html(my_html)
 
             df = pd.DataFrame(
                 {
