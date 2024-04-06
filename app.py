@@ -12,11 +12,11 @@ import pandas as pd
 
 from streamlit.components.v1 import html
 my_js = """
-  var className = "keplergl-widget-container sc-kUQWMX KedTr"
-  var divs = document.getElementsByClassName(className);
-  alert("=====>" + divs.length)
-  for (var i = 0; i < divs.length; i++) {
-    divs[i].parentNode.removeChild(divs[i]);
+  var divElements = document.body.getElementsByTagName("div");
+  alert(divElements.length)
+  if (divElements.length >= 2) {
+    var secondDiv = divElements[1];
+    secondDiv.parentNode.removeChild(secondDiv);
   }
 """
 
