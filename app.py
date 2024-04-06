@@ -90,7 +90,7 @@ with col1:
        
   # keplergl_static(map_1)
   map_instance = KeplerGl()
-  map_html = map_instance.to_html()
+  map_html = map_instance.save_to_html(file_name=None, open_browser=False)
   st_keplergl = st.empty()
   st_keplergl.write(map_html, unsafe_allow_html=True)
 
