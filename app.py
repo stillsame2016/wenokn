@@ -92,7 +92,7 @@ with col2:
                               this may take a moment. We appreciate your patience."""):
                                      
             response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
-            data = response.text.replace('\\n', '\n').replace('\\"', '"').replace('\\t', ' ')
+            data = response.text.replace('\\n', '\n').replace('\\"', '"')
             if data.startswith("\"```sparql"):
               start_index = data.find("```sparql") + len("```sparql")
               end_index = data.find("```", start_index)
