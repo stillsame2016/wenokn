@@ -76,9 +76,9 @@ map_1.config = config
  
 col1, col2 = st.columns([6, 4])
 with col1:  
-   """
+   f"""
      <div id='test' style='display: none; height: 0px'>
-     f{ keplergl_static(map_1) }
+     { keplergl_static(map_1) }
      </div>
    """
 with col2:
