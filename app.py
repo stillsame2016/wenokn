@@ -75,8 +75,10 @@ map_1 = KeplerGl(height=400)
 map_1.config = config
 
 col1, col2 = st.columns([6, 4])
+map_container = st.container(height=400)
 with col1:       
-  keplergl_static(map_1)
+  with map_container:
+    keplergl_static(map_1)
   # st.map(df)
 
 with col2:
@@ -126,8 +128,8 @@ with col2:
             map_2.config = config
             map_2.add_data(data=df, name="cities") 
 
-            col1.empty()
-            with col1:
+            map_container.empty()
+            with map_container:
               keplergl_static(map_2)
 
       else: 
