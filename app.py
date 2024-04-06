@@ -89,7 +89,7 @@ with col1:
   ) 
        
   # keplergl_static(map_1)
-  map_instance = keplergl.KeplerGl()
+  map_instance = KeplerGl()
   st_keplergl = st.empty()
   st_keplergl.write(map_instance)
 
