@@ -75,8 +75,8 @@ map_1 = KeplerGl(height=400)
 map_1.config = config
 
 col1, col2 = st.columns([6, 4])
-map_container = st.container(height=420)
 with col1:  
+  map_container = st.container(height=420)
   with map_container:
     keplergl_static(map_1)
 
