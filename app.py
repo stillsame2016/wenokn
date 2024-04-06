@@ -78,7 +78,6 @@ map_1.config = config
 
 for df in st.session_state.wen_datasets:
     map_1.add_data(data=df, name=f"str(uuid.uuid1())")
-    st.markdown("yes")
  
 col1, col2 = st.columns([6, 4])
 with col1:  
