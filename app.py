@@ -105,7 +105,6 @@ with col2:
               sparql_query = data
             
             st.code(sparql_query)
-            time.sleep(10)
       else: 
          st.chat_message(sender).write(message)
           
