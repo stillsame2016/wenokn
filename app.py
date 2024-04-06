@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_keplergl import keplergl_static
+from streamlit_keplergl import keplergl_interactive
 from keplergl import KeplerGl
 from html import escape
 import json
