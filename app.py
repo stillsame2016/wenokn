@@ -71,7 +71,7 @@ config = {
     },
 }
 
-map_1 = KeplerGl(height=400)
+map_1 = KeplerGl(height=380)
 map_1.config = config
 
 col1, col2 = st.columns([6, 4])
