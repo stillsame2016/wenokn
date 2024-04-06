@@ -75,20 +75,7 @@ map_1 = KeplerGl(height=400)
 map_1.config = config
 
 col1, col2 = st.columns([6, 4])
-with col1:
-
-  df = pd.DataFrame(
-    {
-        "City": ["San Francisco", "San Jose", "Palo Alto"],
-        "latitude": [37.77, 37.33, 37.44],
-        "longitude": [-122.43, -121.89, -122.14],
-    }
-  )
-
-  map_1.add_data(
-    data=df, name="cities"
-  ) 
-       
+with col1:       
   keplergl_static(map_1)
   # st.map(df)
 
@@ -124,14 +111,25 @@ with col2:
             
             st.code(sparql_query)
 
+
             df = pd.DataFrame(
-                    {'City': ['Columbus'],
-                     'Latitude': [ 39.9612 ],
-                     'Longitude': [ -82.9988 ]})
+                {
+                    "City": ["San Francisco", "San Jose", "Palo Alto"],
+                    "latitude": [37.77, 37.33, 37.44],
+                    "longitude": [-122.43, -121.89, -122.14],
+                }
+              )
+            
+           
 
-            map_1.add_data(data=df, name='cities')
+            map_2 = KeplerGl(height=400)
+            map_2.config = config
+            map_2.add_data(data=df, name="cities") 
 
-        
+            col1.empty()
+            with col1:
+              keplergl_static(map_2)
+
       else: 
          st.chat_message(sender).write(message)
           
