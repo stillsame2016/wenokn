@@ -89,8 +89,8 @@ with col1:
     data=df, name="cities"
   ) 
        
-  # keplergl_static(map_1)
-  st.map(df)
+  keplergl_static(map_1)
+  # st.map(df)
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
