@@ -75,10 +75,10 @@ map_1 = KeplerGl(height=400)
 map_1.config = config
 
 col1, col2 = st.columns([6, 4])
+map_container = st.container(height=420)
 with col1:  
-  # keplergl_static(map_1)
-  html = map_1._repr_html_()
-  st.markdown(html, unsafe_allow_html=True)
+  with map_container:
+    keplergl_static(map_1)
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
