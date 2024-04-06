@@ -12,7 +12,7 @@ import pandas as pd
 
 from streamlit.components.v1 import html
 my_js = """
-  var divElements = document.body.getElementsByTagName("div");
+  var divElements = document.getElementsByTagName("div");
   alert(divElements.length)
   if (divElements.length >= 2) {
     var secondDiv = divElements[1];
