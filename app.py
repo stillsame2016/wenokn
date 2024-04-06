@@ -90,8 +90,9 @@ with col1:
        
   # keplergl_static(map_1)
   map_instance = KeplerGl()
+  map_html = map_instance.to_html()
   st_keplergl = st.empty()
-  st_keplergl.write(map_instance)
+  st_keplergl.write(map_html, unsafe_allow_html=True)
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
