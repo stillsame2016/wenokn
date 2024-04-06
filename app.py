@@ -86,11 +86,12 @@ with col1:
 
   map_1.add_data(
     data=df, name="cities"
- ) 
-    
-  st.dataframe(df.head())
-    
-  keplergl_static(map_1)
+  ) 
+       
+  # keplergl_static(map_1)
+  st_keplergl = st.empty()
+  st_keplergl.write(map_1)
+
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
   #  st.write(prompt)
