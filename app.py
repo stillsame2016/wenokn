@@ -126,8 +126,8 @@ with col2:
             map_2.config = config
             map_2.add_data(data=df, name="cities") 
 
-            col1.empty(sparql_query)
-            col1.write()
+            col1.empty()
+            col1.write(sparql_query)
             # with col1:
             #   keplergl_static(map_2)
 
