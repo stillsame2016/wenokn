@@ -18,6 +18,9 @@ model = genai.GenerativeModel('gemini-pro')
 if "chat" not in st.session_state:
     st.session_state.chat = model.start_chat(history=[])
 
+if "wen_datasets" not in st.session_state:
+    st.session_state.wen_datasets = []
+
 safe = [
     {
         "category": "HARM_CATEGORY_HARASSMENT",
@@ -72,6 +75,8 @@ config = {
 
 map_1 = KeplerGl(height=400)
 map_1.config = config
+
+# st.session_state.wen_datasets
  
 col1, col2 = st.columns([6, 4])
 with col1:  
