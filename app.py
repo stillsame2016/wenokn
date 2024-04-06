@@ -109,9 +109,9 @@ with col2:
             st.code(sparql_query)
 
             df = pd.DataFrame(
-                    {'City': ['Buenos Aires', 'Brasilia', 'Santiago', 'Bogota', 'Caracas'],
-                     'Latitude': [-34.58, -15.78, -33.45, 4.60, 10.48],
-                     'Longitude': [-58.66, -47.91, -70.66, -74.08, -66.86]})
+                    {'City': ['Columbus'],
+                     'Latitude': [ 39.9612 ],
+                     'Longitude': [ -82.9988 ]})
 
             map_1.add_data(data=df, name='cities')
 
