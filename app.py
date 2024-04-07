@@ -148,9 +148,7 @@ with col2:
               sparql_query = data[start_index:end_index].strip()
             else:
               sparql_query = data
-
-            st.session_state.sparqls.append(data)
-
+            st.session_state.sparqls.append(sparql_query)
             datasets_number = len(st.session_state.wen_datasets)
 
             endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
@@ -158,7 +156,6 @@ with col2:
             # st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
             gdf = df_to_gdf(df)
             st.session_state.wen_datasets.append(gdf)                      
-            time.sleep(20)
             st.experimental_rerun()
         
       else: 
