@@ -21,6 +21,8 @@ if "chat" not in st.session_state:
 if "wen_datasets" not in st.session_state:
     st.session_state.wen_datasets = []
 
+st.markdown(len(st.session_state.wen_datasets))
+
 safe = [
     {
         "category": "HARM_CATEGORY_HARASSMENT",
