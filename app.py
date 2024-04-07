@@ -114,7 +114,8 @@ col1, col2 = st.columns([6, 4])
 
 info_container = st.container(height=350)
 with info_container:
-    for sparql in st.session_state.sparqls: 
+    for idx, sparql in enumerate(st.session_state.sparqls): 
+      st.markdown("Request")
       st.code(sparql)
 
 with col1:  
@@ -163,7 +164,7 @@ with col2:
       else: 
          st.chat_message(sender).write(message)
 
-  for mid, message in enumerate(st.session_state.chat.history):
+  for message in st.session_state.chat.history:
     with chat_container:
       with st.chat_message("assistant" if message.role == "model" else message.role):
         if message.role == 'user':
@@ -182,7 +183,6 @@ with col2:
 
           if isinstance(data, dict):
             if not data["is_request_data"]:
-              st.markdown(st.session_state.requests[mid])
               assistant_response = data["alternative_answer"]
             else:
               assistant_response = "Your request was processed."
