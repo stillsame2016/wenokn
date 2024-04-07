@@ -28,6 +28,7 @@ if "wen_datasets" not in st.session_state:
     st.session_state.wen_datasets = []
 
 if "sparqls" not in st.session_state:
+    st.session_state.requests = []
     st.session_state.sparqls = []
     
 safe = [
@@ -148,6 +149,7 @@ with col2:
               sparql_query = data[start_index:end_index].strip()
             else:
               sparql_query = data
+            st.session_state.requests.append(message)
             st.session_state.sparqls.append(sparql_query)
             datasets_number = len(st.session_state.wen_datasets)
 
@@ -161,7 +163,7 @@ with col2:
       else: 
          st.chat_message(sender).write(message)
 
-  for message in st.session_state.chat.history:
+  for mid, message in enumerate(st.session_state.chat.history):
     with chat_container:
       with st.chat_message("assistant" if message.role == "model" else message.role):
         if message.role == 'user':
@@ -193,8 +195,7 @@ with col2:
     add_message("User", user_input)
 
     query = f"""
-      You are an expert of the WEN-OKN knowledge database.       
-      You also have general knowledge.
+      You are an expert of the WEN-OKN knowledge database. You also have general knowledge.
       
       The following is a question the user is asking:
        
