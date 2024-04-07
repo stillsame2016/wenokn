@@ -204,4 +204,4 @@ with col2:
     else:
         add_message("assistant", f"{data['request']}", processing=True)
         
-
+st.experimental_rerun()
