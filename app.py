@@ -11,6 +11,8 @@ import uuid
 import pandas as pd
 
 import sparql_dataframe
+import geopandas as gpd
+from shapely import wkt
 
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
@@ -44,6 +46,11 @@ safe = [
 
 def wide_space_default():
   st.set_page_config(layout="wide")
+
+def df_to_gdf(df):
+  column_names = df.columns.tolist()
+  geometry_column_names = [ x for x in column_names if x endwith('Geometry')]
+  st.markdown(f'**{geometry_column_names}**')
 
 wide_space_default()
 
@@ -124,6 +131,8 @@ with col2:
             df = sparql_dataframe.get(endpoint, sparql_query)                                  
             st.session_state.wen_datasets.append(df)
             st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
+            df_to_gdf(df)
+            time.sleep(20)
             st.experimental_rerun()
         
       else: 
