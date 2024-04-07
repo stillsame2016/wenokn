@@ -76,26 +76,6 @@ config = {
 map_1 = KeplerGl(height=400)
 map_1.config = config
 
-
-# df1 = pd.DataFrame(
-#             {
-#                 "City": ['San Francisco', "San Jose", "Palo Alto"],
-#                 "latitude": [37.77, 37.33, 37.44],
-#                 "longitude": [-122.43, -121.89, -122.14],
-#             }
-#           )
-
-# map_1.add_data(data=df1, name='data_1')
-
-# df2 = pd.DataFrame(
-#                 {
-#                     "City": ['X', "Y", "Z"],
-#                     "latitude": [38.77, 38.33, 38.44],
-#                     "longitude": [-121.43, -120.89, -121.14],
-#                 }
-#            )
-# map_1.add_data(data=df2, name='data_2')
-
 for idx, df in enumerate(st.session_state.wen_datasets):
   map_1.add_data(data=df, name=f'data_{idx}')
 
@@ -103,7 +83,6 @@ col1, col2 = st.columns([6, 4])
 with col1:  
   keplergl_static(map_1) 
   st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
-
 
 with col2:
   # if prompt := st.chat_input("What can I help you with?"):
@@ -149,11 +128,6 @@ with col2:
             st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
             st.experimental_rerun()
         
-            # map_2 = KeplerGl(height=400)
-            # map_2.config = config
-            # map_2.add_data(data=df, name="cities") 
-        
-
       else: 
          st.chat_message(sender).write(message)
           
