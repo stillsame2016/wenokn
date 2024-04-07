@@ -117,11 +117,12 @@ with col2:
             
             st.code(sparql_query)
 
+            datasets_number = len(st.session_state.wen_datasets)
             df = pd.DataFrame(
                 {
                     "City": ["San Francisco", "San Jose", "Palo Alto"],
-                    "latitude": [37.77, 37.33, 37.44],
-                    "longitude": [-122.43, -121.89, -122.14],
+                    "latitude": [37.77 + 5 * datasets_number, 37.33, 37.44],
+                    "longitude": [-122.43 + 5 * datasets_number, -121.89, -122.14],
                 }
               )
             st.session_state.wen_datasets.append(df)
