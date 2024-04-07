@@ -20,6 +20,23 @@ if "chat" not in st.session_state:
 
 if "wen_datasets" not in st.session_state:
     st.session_state.wen_datasets = []
+    df = pd.DataFrame(
+                {
+                    "City": 'San Francisco', "San Jose", "Palo Alto"],
+                    "latitude": [37.77, 37.33, 37.44],
+                    "longitude": [-122.43, -121.89, -122.14],
+                }
+              )
+    st.session_state.wen_datasets.append(df)
+
+    df = pd.DataFrame(
+                {
+                    "City": 'X', "Y", "Z"],
+                    "latitude": [38.77, 38.33, 38.44],
+                    "longitude": [-121.43, -120.89, -121.14],
+                }
+              )
+    st.session_state.wen_datasets.append(df)
 
 safe = [
     {
