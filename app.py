@@ -163,6 +163,7 @@ with col2:
 
   for message in st.session_state.chat.history:
     with st.chat_message("assistant" if message.role == "model" else message.role):
+      with chat_container:
         st.markdown(message.role)
         st.markdown(message.parts[0].text)
     
