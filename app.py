@@ -160,7 +160,12 @@ with col2:
         
       else: 
          st.chat_message(sender).write(message)
-          
+
+  for message in st.session_state.chat_session.history:
+    with st.chat_message(message.role):
+        st.markdown(message.role)
+        st.markdown(message.parts[0].text)
+    
   # Get user input
   user_input = st.chat_input("What can I help you with?")
     
