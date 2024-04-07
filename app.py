@@ -47,6 +47,9 @@ safe = [
 def wide_space_default():
   st.set_page_config(layout="wide")
 
+def get_column_name_parts(column_name):
+    return re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', s)_parts(column_name):
+    
 def df_to_gdf(df):
   column_names = df.columns.tolist()
   geometry_column_names = [ x for x in column_names if x.endswith('Geometry')]
@@ -54,6 +57,10 @@ def df_to_gdf(df):
   gdf = gpd.GeoDataFrame(df, geometry='geometry')
   gdf.drop(columns=[geometry_column_names[0]], inplace=True)
   # st.markdown(gdf.columns.tolist())
+
+  for column_name in column_names:
+    column_name_parts = get_column_name_parts(column_name)
+    gdf.rename(columns={column_name: column_name_parts[-1]}, inplace=True)
   return gdf
 
 
