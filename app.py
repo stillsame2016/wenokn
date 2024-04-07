@@ -115,7 +115,7 @@ col1, col2 = st.columns([6, 4])
 info_container = st.container(height=350)
 with info_container:
     for idx, sparql in enumerate(st.session_state.sparqls): 
-      st.markdown(f"Request: {st.session_state.requests[idx]}")
+      st.markdown(f"**Request:**  {st.session_state.requests[idx]}")
       st.code(sparql)
 
 with col1:  
