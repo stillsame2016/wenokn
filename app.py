@@ -61,7 +61,7 @@ def df_to_gdf(df):
   
   column_name_parts = get_column_name_parts(column_names[0])
   column_name_parts.pop()
-  gdf.attrs['data_name'] = " ".join(column_name_parts)
+  gdf.attrs['data_name'] = "_".join(column_name_parts).capitalize()
   
   for column_name in column_names:
     column_name_parts = get_column_name_parts(column_name)
