@@ -171,7 +171,19 @@ with col2:
           prompt = prompt[start_index:end_index].strip()
           st.markdown(prompt)
         else:
-          st.markdown(message.parts[0].text)
+          answer = message.parts[0].text
+          if answer.startswith('```json'):
+            json_part = answer.split("\n", 1)[1].rsplit("\n", 1)[0]
+            data = json.loads(json_part)
+          else:
+            data = json.loads(answer)
+
+          if isinstance(data, dict):
+            if not data["is_request_data"]:
+              assistant_response = data["alternative_answer"]
+            else:
+              assistant_response = "Your request was processed."
+            st.markdown(assistant_response)
     
   # Get user input
   user_input = st.chat_input("What can I help you with?")
