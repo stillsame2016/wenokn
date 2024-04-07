@@ -1,15 +1,17 @@
+import json
+import re
+import time
+import uuid
+import requests
+
+import pandas as pd
 import streamlit as st
+
 from streamlit_keplergl import keplergl_static
 from keplergl import KeplerGl
 from html import escape
-import json
 
 import google.generativeai as genai
-import requests
-import time
-import uuid
-import pandas as pd
-
 import sparql_dataframe
 import geopandas as gpd
 from shapely import wkt
