@@ -194,7 +194,7 @@ with col2:
        The string field "request" for the extracted request in the simplest format. The number of the
        entities the user is asking for must be included in the "request".
        
-       The string field "alternative_answer" gives your positive answer to the user's input
+       The string field "alternative_answer" gives your positive and nice answer to the user's input
        if the user is not requesting for data. If the user is asking what data or data types you have,
        please answer it based on this description:
 
