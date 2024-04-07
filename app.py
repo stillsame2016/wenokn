@@ -153,6 +153,17 @@ with col2:
                     sparql_query = data[start_index:end_index].strip()
                   else:
                     sparql_query = data
+
+                  st.markdown(
+                      """
+                      <style>
+                      .st-code > pre {
+                          font-size: 0.8em;  /* Adjust as needed */
+                      }
+                      </style>
+                      """,
+                      unsafe_allow_html=True
+                    )
                   st.code(sparql_query)
                   
                   endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
