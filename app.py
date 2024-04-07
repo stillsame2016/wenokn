@@ -58,21 +58,16 @@ def df_to_gdf(df):
   df['geometry'] = df[geometry_column_names[0]].apply(wkt.loads)
   gdf = gpd.GeoDataFrame(df, geometry='geometry')
   gdf.drop(columns=[geometry_column_names[0]], inplace=True)
-  # st.markdown(gdf.columns.tolist())
-
+  
+  column_name_parts = get_column_name_parts(column_names[0])
+  column_name_parts.pop()
+  gdf.attrs['data_name'] = " ".join(column_name_parts)
+  
   for column_name in column_names:
     column_name_parts = get_column_name_parts(column_name)
     gdf.rename(columns={column_name: column_name_parts[-1]}, inplace=True)
   return gdf
 
-def get_data_name(df):
-    column_names = df.columns.tolist()
-    st.markdown(f"column names: {str(column_names)}")
-    column_name_parts = get_column_name_parts(column_names[0])
-    column_name_parts.pop()
-    st.markdown(f"column names part: {str(column_name_parts)}")
-
-    return "_".join(column_name_parts)
 
 wide_space_default()
 
@@ -108,7 +103,7 @@ map_1 = KeplerGl(height=400)
 map_1.config = config
 
 for idx, df in enumerate(st.session_state.wen_datasets):
-  data_name = get_data_name(df)
+  data_name = df.attrs['data_name']
   map_1.add_data(data=df, name=f'{data_name}_{idx}')
 
 col1, col2 = st.columns([6, 4])
