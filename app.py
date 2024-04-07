@@ -156,7 +156,7 @@ with col2:
             # st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
             gdf = df_to_gdf(df)
             st.session_state.wen_datasets.append(gdf)                      
-            st.experimental_rerun()
+            st.rerun()
         
       else: 
          st.chat_message(sender).write(message)
