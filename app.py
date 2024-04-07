@@ -114,7 +114,7 @@ col1, col2 = st.columns([6, 4])
 info_container = st.container(height=350)
 with info_container:
     for sparql in st.session_state.sparqls: 
-      st.markdown(sparql)
+      st.code(sparql)
 
 with col1:  
   keplergl_static(map_1) 
