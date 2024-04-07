@@ -173,7 +173,8 @@ with col2:
        the WEN-OKN knowledge database, otherwise "is_request_data" is false. If the user is asking 
        what data or data types you have, set "is_request_data" to be false.
        
-       The string field "request" for the extracted request in the simplest format.
+       The string field "request" for the extracted request in the simplest format. The number of the
+       entities the user is asking for must be included in the "request".
        
        The string field "alternative_answer" gives your positive answer to the user's input
        if the user is not requesting for data. If the user is asking what data or data types you have,
