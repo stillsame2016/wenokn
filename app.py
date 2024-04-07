@@ -82,7 +82,7 @@ for df in st.session_state.wen_datasets:
 col1, col2 = st.columns([6, 4])
 with col1:  
   keplergl_static(map_1) 
-  st.markdown(f"datasets size: {len(st.session_state.wen_datasets)"})
+  st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
 
 
 with col2:
