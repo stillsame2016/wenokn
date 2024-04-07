@@ -182,6 +182,7 @@ with col2:
 
           if isinstance(data, dict):
             if not data["is_request_data"]:
+              st.markdown(st.session_state.requests[mid])
               assistant_response = data["alternative_answer"]
             else:
               assistant_response = "Your request was processed."
