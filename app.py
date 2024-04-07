@@ -140,29 +140,31 @@ with col2:
             max_tries = 5
             tried = 0
             while tried < max_tries:
-              response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
-              data = response.text.replace('\\n', '\n').replace('\\"', '"').replace('\\t', ' ')
-              if data.startswith("\"```sparql"):
-                start_index = data.find("```sparql") + len("```sparql")
-                end_index = data.find("```", start_index)
-                sparql_query = data[start_index:end_index].strip()
-              elif data.startswith("\"```code"):
-                start_index = data.find("```code") + len("```code")
-                end_index = data.find("```", start_index)
-                sparql_query = data[start_index:end_index].strip()
-              else:
-                sparql_query = data
-  
-              endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
-              df = sparql_dataframe.get(endpoint, sparql_query)                                  
-              gdf = df_to_gdf(df)
-                                    
-              st.session_state.requests.append(message)
-              st.session_state.sparqls.append(sparql_query)
-              st.session_state.wen_datasets.append(gdf)  
-              st.rerun()
-            except:
-              tried += 1               
+              try:
+                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
+                  data = response.text.replace('\\n', '\n').replace('\\"', '"').replace('\\t', ' ')
+                  if data.startswith("\"```sparql"):
+                    start_index = data.find("```sparql") + len("```sparql")
+                    end_index = data.find("```", start_index)
+                    sparql_query = data[start_index:end_index].strip()
+                  elif data.startswith("\"```code"):
+                    start_index = data.find("```code") + len("```code")
+                    end_index = data.find("```", start_index)
+                    sparql_query = data[start_index:end_index].strip()
+                  else:
+                    sparql_query = data
+      
+                  endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
+                  df = sparql_dataframe.get(endpoint, sparql_query)                                  
+                  gdf = df_to_gdf(df)
+                                        
+                  st.session_state.requests.append(message)
+                  st.session_state.sparqls.append(sparql_query)
+                  st.session_state.wen_datasets.append(gdf)  
+                  st.rerun()
+                  break
+              except:
+                tried += 1               
             if tried == max_tried:
               st.markdown("We are not able to process your request at this moment. You can try it again now or later.")
         
