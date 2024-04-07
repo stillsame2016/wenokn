@@ -205,7 +205,7 @@ with col2:
             if not data["is_request_data"]:
               assistant_response = data["alternative_answer"]
             else:
-              assistant_response = "Your request was processed."
+              assistant_response = "Your request has been processed.."
             st.markdown(assistant_response)
     
   # Get user input
