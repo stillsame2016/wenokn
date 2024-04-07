@@ -165,7 +165,7 @@ with col2:
                   st.session_state.wen_datasets.append(gdf)  
                   st.rerun()
               except Exception as e:
-                st.markdown(str(e))
+                st.markdown(f"Encounter an error: {str(e)}. Try again...")
                 tried += 1               
             if tried == max_tries:
               st.markdown("We are not able to process your request at this moment. You can try it again now or later.")
