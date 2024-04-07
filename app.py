@@ -10,6 +10,8 @@ import time
 import uuid
 import pandas as pd
 
+import sparql_dataframe
+
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
@@ -117,13 +119,9 @@ with col2:
             st.code(sparql_query)
 
             datasets_number = len(st.session_state.wen_datasets)
-            df = pd.DataFrame(
-                {
-                    "City": [str(uuid.uuid1()), "San Jose", "Palo Alto"],
-                    "latitude": [37.77 - 0.5 * datasets_number, 37.33, 37.44],
-                    "longitude": [-122.43 - 0.5 * datasets_number, -121.89, -122.14],
-                }
-              )
+
+            endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
+            df = sparql_dataframe.get(endpoint, sparql_query)                                  
             st.session_state.wen_datasets.append(df)
             st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
             st.experimental_rerun()
