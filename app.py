@@ -147,7 +147,7 @@ with col2:
               )
             st.session_state.wen_datasets.append(df)
             st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
-            st.experimental_rerun()
+            # st.experimental_rerun()
         
             # map_2 = KeplerGl(height=400)
             # map_2.config = config
