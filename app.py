@@ -28,7 +28,7 @@ if "wen_datasets" not in st.session_state:
     st.session_state.wen_datasets = []
 
 if "sparqls" not in st.session_state:
-    st.session_state.sparql = []
+    st.session_state.sparqls = []
     
 safe = [
     {
@@ -113,7 +113,8 @@ col1, col2 = st.columns([6, 4])
 
 info_container = st.container(height=350)
 with info_container:
-    st.markdown('information panel')
+    for sparql in st.session_state.sparqls: 
+      st.markdown(sparql)
 
 with col1:  
   keplergl_static(map_1) 
@@ -148,8 +149,7 @@ with col2:
             else:
               sparql_query = data
 
-            with info_container:
-              st.code(sparql_query)
+            st.session_state.sparqls.append(data)
 
             datasets_number = len(st.session_state.wen_datasets)
 
