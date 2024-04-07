@@ -26,6 +26,9 @@ if "chat" not in st.session_state:
 
 if "wen_datasets" not in st.session_state:
     st.session_state.wen_datasets = []
+
+if "sparqls" not in st.session_state:
+    st.session_state.sparql = []
     
 safe = [
     {
