@@ -67,8 +67,9 @@ def df_to_gdf(df):
 
 def get_data_name(df):
     column_names = df.columns.tolist()
-    column_name_parts = get_column_name_parts(column_names[0])[:-1]
-    return " ".join(column_name_parts)
+    column_name_parts = get_column_name_parts(column_names[0]).pop()
+    st.markedown(str(column_name_parts))
+    return "_".join(column_name_parts)
 
 wide_space_default()
 
