@@ -50,7 +50,11 @@ def wide_space_default():
 def df_to_gdf(df):
   column_names = df.columns.tolist()
   geometry_column_names = [ x for x in column_names if x.endswith('Geometry')]
-  st.markdown(f'**{geometry_column_names}**')
+  df['geometry'] = df[geometry_column_names[0]].apply(wkt.loads)
+  gdf = gpd.GeoDataFrame(df, geometry='geometry')
+  gdf.drop(columns=[geometry_column_names[0]], inplace=True)
+  return gdf
+
 
 wide_space_default()
 
@@ -129,9 +133,9 @@ with col2:
 
             endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
             df = sparql_dataframe.get(endpoint, sparql_query)                                  
-            st.session_state.wen_datasets.append(df)
             st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
-            df_to_gdf(df)
+            gdf = df_to_gdf(df)
+            st.session_state.wen_datasets.append(gdf)                      
             time.sleep(20)
             st.experimental_rerun()
         
