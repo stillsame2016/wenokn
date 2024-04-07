@@ -164,8 +164,14 @@ with col2:
   for message in st.session_state.chat.history:
     with chat_container:
       with st.chat_message("assistant" if message.role == "model" else message.role):
-        st.markdown(message.role)
-        st.markdown(message.parts[0].text)
+        if message.role == 'user':
+          prompt = message.parts[0].text
+          start_index = prompt.find("[--- Start ---]") + len("[--- Start ---]")
+          end_index = prompt.find("[--- End ---]")
+          prompt = prompt[start_index:end_index].strip()
+          st.markdown(prompt)
+        else:
+          st.markdown(message.parts[0].text)
     
   # Get user input
   user_input = st.chat_input("What can I help you with?")
