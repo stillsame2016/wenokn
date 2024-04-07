@@ -153,7 +153,8 @@ with col2:
                     sparql_query = data[start_index:end_index].strip()
                   else:
                     sparql_query = data
-      
+                  st.code(sparql_query)
+                  
                   endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
                   df = sparql_dataframe.get(endpoint, sparql_query)                                  
                   gdf = df_to_gdf(df)
@@ -163,7 +164,8 @@ with col2:
                   st.session_state.sparqls.append(sparql_query)
                   st.session_state.wen_datasets.append(gdf)  
                   st.rerun()
-              except:
+              except Exception as e:
+                st.markdown(str(e))
                 tried += 1               
             if tried == max_tries:
               st.markdown("We are not able to process your request at this moment. You can try it again now or later.")
