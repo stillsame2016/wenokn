@@ -53,7 +53,7 @@ def df_to_gdf(df):
   df['geometry'] = df[geometry_column_names[0]].apply(wkt.loads)
   gdf = gpd.GeoDataFrame(df, geometry='geometry')
   gdf.drop(columns=[geometry_column_names[0]], inplace=True)
-  st.markdown(gdf.columns.tolist())
+  # st.markdown(gdf.columns.tolist())
   return gdf
 
 
@@ -134,7 +134,7 @@ with col2:
 
             endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
             df = sparql_dataframe.get(endpoint, sparql_query)                                  
-            st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
+            # st.markdown(f"datasets size: {len(st.session_state.wen_datasets)}")
             gdf = df_to_gdf(df)
             st.session_state.wen_datasets.append(gdf)                      
             time.sleep(20)
