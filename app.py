@@ -157,12 +157,12 @@ with col2:
                   endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
                   df = sparql_dataframe.get(endpoint, sparql_query)                                  
                   gdf = df_to_gdf(df)
-                                        
+
+                  tried = max_tries + 10
                   st.session_state.requests.append(message)
                   st.session_state.sparqls.append(sparql_query)
                   st.session_state.wen_datasets.append(gdf)  
                   st.rerun()
-                  break
               except:
                 tried += 1               
             if tried == max_tries:
