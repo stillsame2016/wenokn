@@ -76,28 +76,28 @@ config = {
 map_1 = KeplerGl(height=400)
 map_1.config = config
 
-# for df in st.session_state.wen_datasets:
-#     map_1.add_data(data=df, name=f"str(uuid.uuid1())")
 
-df1 = pd.DataFrame(
-            {
-                "City": ['San Francisco', "San Jose", "Palo Alto"],
-                "latitude": [37.77, 37.33, 37.44],
-                "longitude": [-122.43, -121.89, -122.14],
-            }
-          )
+# df1 = pd.DataFrame(
+#             {
+#                 "City": ['San Francisco', "San Jose", "Palo Alto"],
+#                 "latitude": [37.77, 37.33, 37.44],
+#                 "longitude": [-122.43, -121.89, -122.14],
+#             }
+#           )
 
+# map_1.add_data(data=df1, name='data_1')
 
-map_1.add_data(data=df1, name='data_1')
+# df2 = pd.DataFrame(
+#                 {
+#                     "City": ['X', "Y", "Z"],
+#                     "latitude": [38.77, 38.33, 38.44],
+#                     "longitude": [-121.43, -120.89, -121.14],
+#                 }
+#            )
+# map_1.add_data(data=df2, name='data_2')
 
-df2 = pd.DataFrame(
-                {
-                    "City": ['X', "Y", "Z"],
-                    "latitude": [38.77, 38.33, 38.44],
-                    "longitude": [-121.43, -120.89, -121.14],
-                }
-           )
-map_1.add_data(data=df2, name='data_2')
+for idx, df in enumerate(st.session_state.wen_datasets):
+  map_1.add_data(data=df, name=f'data_{idx}')
 
 col1, col2 = st.columns([6, 4])
 with col1:  
@@ -141,8 +141,8 @@ with col2:
             df = pd.DataFrame(
                 {
                     "City": [str(uuid.uuid1()), "San Jose", "Palo Alto"],
-                    "latitude": [37.77 + 0.5 * datasets_number, 37.33, 37.44],
-                    "longitude": [-122.43 + 0.5 * datasets_number, -121.89, -122.14],
+                    "latitude": [37.77 - 0.5 * datasets_number, 37.33, 37.44],
+                    "longitude": [-122.43 - 0.5 * datasets_number, -121.89, -122.14],
                 }
               )
             st.session_state.wen_datasets.append(df)
