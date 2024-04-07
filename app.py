@@ -20,23 +20,23 @@ if "chat" not in st.session_state:
 
 if "wen_datasets" not in st.session_state:
     st.session_state.wen_datasets = []
-    df = pd.DataFrame(
+    df1 = pd.DataFrame(
                 {
                     "City": ['San Francisco', "San Jose", "Palo Alto"],
                     "latitude": [37.77, 37.33, 37.44],
                     "longitude": [-122.43, -121.89, -122.14],
                 }
               )
-    st.session_state.wen_datasets.append(df)
+    st.session_state.wen_datasets.append(df1)
 
-    df = pd.DataFrame(
+    df2 = pd.DataFrame(
                 {
                     "City": ['X', "Y", "Z"],
                     "latitude": [38.77, 38.33, 38.44],
                     "longitude": [-121.43, -120.89, -121.14],
                 }
               )
-    st.session_state.wen_datasets.append(df)
+    st.session_state.wen_datasets.append(df2)
 
 safe = [
     {
@@ -93,8 +93,21 @@ config = {
 map_1 = KeplerGl(height=400)
 map_1.config = config
 
-for df in st.session_state.wen_datasets:
-    map_1.add_data(data=df, name=f"str(uuid.uuid1())")
+# for df in st.session_state.wen_datasets:
+#     map_1.add_data(data=df, name=f"str(uuid.uuid1())")
+
+datasets = [
+    {
+        "info": {"id": str(uuid.uuid1()), "label": "Dataset 1"},
+        "data": df1
+    },
+    {
+        "info": {"id": str(uuid.uuid1()), "label": "Dataset 2"},
+        "data": df2
+    },
+    # ... add more datasets
+]
+map_1.addDataToMap(datasets)
  
 col1, col2 = st.columns([6, 4])
 with col1:  
