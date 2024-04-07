@@ -210,7 +210,7 @@ with col2:
     response = st.session_state.chat.send_message(query, safety_settings=safe)
 
     data = response.text
-    st.markdown(data)
+    # st.markdown(data)
     # print('-' * 70, 'raw data')
     # print(data)
 
