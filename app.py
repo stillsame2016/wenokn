@@ -107,6 +107,11 @@ for idx, df in enumerate(st.session_state.wen_datasets):
   map_1.add_data(data=df, name=f'{data_name}_{idx}')
 
 col1, col2 = st.columns([6, 4])
+
+info_container = st.container(height=350)
+with info_container:
+    st.markdown('information panel')
+
 with col1:  
   keplergl_static(map_1) 
 
