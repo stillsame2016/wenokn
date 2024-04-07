@@ -48,7 +48,7 @@ def wide_space_default():
   st.set_page_config(layout="wide")
 
 def get_column_name_parts(column_name):
-    return re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', column_name):
+    return re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', column_name)
     
 def df_to_gdf(df):
   column_names = df.columns.tolist()
