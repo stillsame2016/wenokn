@@ -49,7 +49,7 @@ def wide_space_default():
 
 def df_to_gdf(df):
   column_names = df.columns.tolist()
-  geometry_column_names = [ x for x in column_names if x endwith('Geometry')]
+  geometry_column_names = [ x for x in column_names if x.endwith('Geometry')]
   st.markdown(f'**{geometry_column_names}**')
 
 wide_space_default()
