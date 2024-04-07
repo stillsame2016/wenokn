@@ -165,7 +165,7 @@ with col2:
                   break
               except:
                 tried += 1               
-            if tried == max_tried:
+            if tried == max_tries:
               st.markdown("We are not able to process your request at this moment. You can try it again now or later.")
         
       else: 
