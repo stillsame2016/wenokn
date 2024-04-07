@@ -2,3 +2,4 @@ streamlit
 streamlit-keplergl
 google-generativeai
 pandas
+sparql_dataframe
