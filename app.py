@@ -65,6 +65,10 @@ def df_to_gdf(df):
     gdf.rename(columns={column_name: column_name_parts[-1]}, inplace=True)
   return gdf
 
+def get_data_name(df):
+    column_names = df.columns.tolist()
+    column_name_parts = get_column_name_parts(column_names[0])[:-1]
+    return " ".join(column_name_parts)
 
 wide_space_default()
 
@@ -100,7 +104,8 @@ map_1 = KeplerGl(height=400)
 map_1.config = config
 
 for idx, df in enumerate(st.session_state.wen_datasets):
-  map_1.add_data(data=df, name=f'data_{idx}')
+  data_name = get_data_name(df)
+  map_1.add_data(data=df, name=f'{data_name}_{idx}')
 
 col1, col2 = st.columns([6, 4])
 with col1:  
