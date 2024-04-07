@@ -144,8 +144,9 @@ with col2:
               sparql_query = data[start_index:end_index].strip()
             else:
               sparql_query = data
-            
-            st.code(sparql_query)
+
+            with info_container:
+              st.code(sparql_query)
 
             datasets_number = len(st.session_state.wen_datasets)
 
