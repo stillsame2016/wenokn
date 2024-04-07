@@ -112,11 +112,12 @@ for idx, df in enumerate(st.session_state.wen_datasets):
 
 col1, col2 = st.columns([6, 4])
 
-info_container = st.container(height=350)
-with info_container:
-    for idx, sparql in enumerate(st.session_state.sparqls): 
-      st.markdown(f"**Request:**  {st.session_state.requests[idx]}")
-      st.code(sparql)
+if st.session_state.sparqls:
+  info_container = st.container(height=350)
+  with info_container:
+      for idx, sparql in enumerate(st.session_state.sparqls): 
+        st.markdown(f"**Request:**  {st.session_state.requests[idx]}")
+        st.code(sparql)
 
 with col1:  
   keplergl_static(map_1) 
