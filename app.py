@@ -158,7 +158,7 @@ with col2:
                       """
                       <style>
                       .st-code > pre {
-                          font-size: 0.8em;  /* Adjust as needed */
+                          font-size: 0.4em; 
                       }
                       </style>
                       """,
