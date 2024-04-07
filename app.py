@@ -53,7 +53,7 @@ def df_to_gdf(df):
   df['geometry'] = df[geometry_column_names[0]].apply(wkt.loads)
   gdf = gpd.GeoDataFrame(df, geometry='geometry')
   gdf.drop(columns=[geometry_column_names[0]], inplace=True)
-  st.makedown(gdf.columns.tolist())
+  st.markdown(gdf.columns.tolist())
   return gdf
 
 
