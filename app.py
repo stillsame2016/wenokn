@@ -185,7 +185,7 @@ with col2:
                   st.session_state.requests.append(message)
                   st.session_state.sparqls.append(sparql_query)
                   st.session_state.wen_datasets.append(gdf)  
-                  # st.rerun()
+                  st.rerun()
               except Exception as e:
                 st.markdown(f"Encounter an error: {str(e)}. Try again...")
                 tried += 1               
