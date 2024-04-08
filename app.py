@@ -112,10 +112,13 @@ if "kepler" not in st.session_state:
     st.session_state.kepler = map_1
 else:
     map_1 = st.session_state.kepler
+    for idx, df in enumerate(st.session_state.wen_datasets):
+        data_name = df.attrs['data_name']
+        map_1.add_data(data=df, name=f'{data_name}_{idx}')
 
-for idx, df in enumerate(st.session_state.wen_datasets):
-  data_name = df.attrs['data_name']
-  map_1.add_data(data=df, name=f'{data_name}_{idx}')
+# for idx, df in enumerate(st.session_state.wen_datasets):
+#   data_name = df.attrs['data_name']
+#   map_1.add_data(data=df, name=f'{data_name}_{idx}')
 
 col1, col2 = st.columns([6, 4])
 
