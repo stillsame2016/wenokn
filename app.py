@@ -103,8 +103,15 @@ config = {
     },
 }
 
-map_1 = KeplerGl(height=400)
-map_1.config = config
+# map_1 = KeplerGl(height=400)
+# map_1.config = config
+
+if "kepler" not in st.session_state:
+    map_1 = KeplerGl(height=400)
+    map_1.config = config
+    st.session_state.kepler = map_1
+else:
+    map_1 = st.session_state.kepler
 
 for idx, df in enumerate(st.session_state.wen_datasets):
   data_name = df.attrs['data_name']
