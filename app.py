@@ -245,9 +245,10 @@ with col2:
        if the user is not requesting for data. If the user is asking what data or data types you have,
        please answer it based on this description:
 
-       The WEN-OKN knowledge database contains the locations of buildings, power stations 
-       and underground storage tanks in Ohio.
-        
+       The WEN-OKN knowledge database contains the following:
+          1. locations of buildings, power stations and underground storage tanks in Ohio.
+          2. USA counties and their geometries.
+           
        Please never say "I cannot" or "I could not". 
          
        Please note that the user's request for datasets may appear in the middle of the text, 
