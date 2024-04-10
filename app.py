@@ -109,9 +109,10 @@ config = {
 map_1 = KeplerGl(height=400)
 map_1.config = config
 
-for idx, df in enumerate(st.session_state.wen_datasets):
-  data_name = df.attrs['data_name']
-  map_1.add_data(data=df, name=f'{data_name}_{idx}')
+if st.session_state.wen_datasets:
+  for idx, df in enumerate(st.session_state.wen_datasets):
+    data_name = df.attrs['data_name']
+    map_1.add_data(data=df, name=f'{data_name}_{idx}')
 
 col1, col2 = st.columns([6, 4])
 
