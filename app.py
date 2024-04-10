@@ -51,7 +51,7 @@ safe = [
 ]
 
 def wide_space_default():
-  st.set_page_config(layout="wide")
+  st.set_page_config(layout="wide", page_title="WEN-OKN")
 
 def get_column_name_parts(column_name):
     return re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', column_name)
