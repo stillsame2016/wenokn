@@ -73,7 +73,7 @@ def df_to_gdf(df):
   #   tmp_data_name = " ".join(column_name_parts).capitalize()
   #   if tmp_data_name == gdf.attrs['data_name']:
   #     gdf.rename(columns={column_name: name}, inplace=True)
-  # return gdf
+  return gdf
 
 
 wide_space_default()
@@ -116,12 +116,12 @@ if st.session_state.wen_datasets:
 
 col1, col2 = st.columns([6, 4])
 
-if st.session_state.sparqls:
-  info_container = st.container(height=350)
-  with info_container:
-      for idx, sparql in enumerate(st.session_state.sparqls): 
-        st.markdown(f"**Request:**  {st.session_state.requests[idx]}")
-        st.code(sparql)
+
+info_container = st.container(height=350)
+with info_container:
+  for idx, sparql in enumerate(st.session_state.sparqls): 
+    st.markdown(f"**Request:**  {st.session_state.requests[idx]}")
+    st.code(sparql)
 
 with col1:  
   keplergl_static(map_1) 
