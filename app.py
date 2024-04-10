@@ -74,6 +74,8 @@ def df_to_gdf(df):
     if gdf.attrs['data_name'] == tmp_data_name:
       column_name_parts = get_column_name_parts(column_name)
       gdf.rename(columns={column_name: column_name_parts[-1]}, inplace=True)
+    else:
+      gdf.rename(columns={column_name: tmp_data_name + "_" + column_name_parts[-1]}, inplace=True)
   return gdf
 
 
