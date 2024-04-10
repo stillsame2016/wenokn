@@ -67,11 +67,12 @@ def df_to_gdf(df):
   column_name_parts.pop()
   gdf.attrs['data_name'] = " ".join(column_name_parts).capitalize()
   
-  # for column_name in column_names:
-  #   tmp_column_name_parts = get_column_name_parts(column_name)
-  #   name = tmp_column_name_parts.pop()  
-  #   tmp_data_name = " ".join(column_name_parts).capitalize()
-  #   if tmp_data_name == gdf.attrs['data_name']:
+  for column_name in column_names:
+    tmp_column_name_parts = get_column_name_parts(column_name)
+    tmp_name = tmp_column_name_parts.pop()  
+    tmp_data_name = " ".join(column_name_parts).capitalize()
+    gdf.rename(columns={column_name: tmp_name}, inplace=True)
+  # if tmp_data_name == gdf.attrs['data_name']:
   #     gdf.rename(columns={column_name: name}, inplace=True)
   return gdf
 
