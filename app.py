@@ -6,6 +6,7 @@ import requests
 
 import pandas as pd
 import streamlit as st
+import numpy as np
 
 from streamlit_keplergl import keplergl_static
 from keplergl import KeplerGl
