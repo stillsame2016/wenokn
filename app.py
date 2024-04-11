@@ -121,9 +121,9 @@ config = {
     "version": "v1",
     "config": {
         "mapState": {
-            "latitude": (miny + maxy) / 2,
-            "longitude": (minx + maxx) / 2,
-            "zoom": 11,
+            "latitude": (miny + maxy) / 2 if miny and maxy else 40.4173,
+            "longitude": (minx + maxx) / 2 if minx and maxx else -82.9071,
+            "zoom": 11 if minx and miny and maxx and maxy else 6,
             "pitch": 0,
             "bearing": 0
         }
