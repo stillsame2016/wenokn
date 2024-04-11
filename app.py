@@ -126,19 +126,19 @@ if minx and miny and maxx and maxy:
   aspect_ratio = width / height
   zoom_level = 15 - int(round(np.log2(max(width, height)) - 1, 0))
 
-config = {
-    "version": "v1",
-    "config": {
-        "mapState": {
-            "latitude": (miny + maxy) / 2 if miny and maxy else 40.4173,
-            "longitude": (minx + maxx) / 2 if minx and maxx else -82.9071,
-            "zoom": zoom_level,
-            "pitch": 0,
-            "bearing": 0
-        }
-    },
-}
-map_1.config = config
+# config = {
+#     "version": "v1",
+#     "config": {
+#         "mapState": {
+#             "latitude": (miny + maxy) / 2 if miny and maxy else 40.4173,
+#             "longitude": (minx + maxx) / 2 if minx and maxx else -82.9071,
+#             "zoom": zoom_level,
+#             "pitch": 0,
+#             "bearing": 0
+#         }
+#     },
+# }
+# map_1.config = config
 
 col1, col2 = st.columns([6, 4])
 
