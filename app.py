@@ -111,6 +111,7 @@ config = {
 map_1 = KeplerGl(height=400)
 map_1.config = config
 
+minx, miny, maxx, maxy = None, None, None, None
 if st.session_state.wen_datasets:
   for idx, df in enumerate(st.session_state.wen_datasets):
     data_name = df.attrs['data_name']
