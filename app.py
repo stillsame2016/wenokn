@@ -130,7 +130,7 @@ config = {
         }
     },
 }
-
+map_1.config = config
 
 col1, col2 = st.columns([6, 4])
 
