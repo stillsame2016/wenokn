@@ -118,13 +118,20 @@ if st.session_state.wen_datasets:
     map_1.add_data(data=df, name=f'{data_name}_{idx}')
     minx, miny, maxx, maxy = df.total_bounds
 
+zoom_level = 6
+if minx and miny and maxx and maxy:
+  width = maxx - minx
+  height = maxy - miny
+  aspect_ratio = width / height
+  zoom_level = 15 - int(round(np.log2(max(width, height)) - 1, 0))
+
 config = {
     "version": "v1",
     "config": {
         "mapState": {
             "latitude": (miny + maxy) / 2 if miny and maxy else 40.4173,
             "longitude": (minx + maxx) / 2 if minx and maxx else -82.9071,
-            "zoom": 11 if minx and miny and maxx and maxy else 6,
+            "zoom": zoom_level,
             "pitch": 0,
             "bearing": 0
         }
@@ -133,7 +140,6 @@ config = {
 map_1.config = config
 
 col1, col2 = st.columns([6, 4])
-
 
 info_container = st.container(height=350)
 with info_container:
