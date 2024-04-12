@@ -237,9 +237,9 @@ with col2:
        knowledge database.
        
        If they are requesting for data in the scope of the WEN-OKN knowledge database, then extract 
-       the concise request from the user's input. Rephrase the user's request in a simple and format
-       way. Remove all adjectives like "beautiful" or "pretty". Remove the terms like "Please" etc. 
-       Use the format like "Find ...".
+       the request from the user's input. Rephrase the user's request in a formal way. Remove all 
+       adjectives like "beautiful" or "pretty". Remove the terms like "Please" etc. Use the format 
+       like "Find ...".
 
        Please answer with a valid JSON string, including the following three fields:
        
