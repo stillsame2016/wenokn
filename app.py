@@ -106,7 +106,14 @@ config = {
             "pitch": 0,
             "zoom": 6,
         },
-        "blendingMode": "additive"
+        "blendingMode": "additive",
+        "layers": [{
+                    "type": "simple_feature",
+                    "visConfig": {
+                        "opacity": 0.5  # Set the default opacity to 0.5
+                    }
+                }
+            ]
     },
 }
 
