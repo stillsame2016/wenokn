@@ -105,7 +105,8 @@ config = {
             "longitude": -82.9071,
             "pitch": 0,
             "zoom": 6,
-        }
+        },
+        "blendingMode": "additive"
     },
 }
 
