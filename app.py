@@ -110,7 +110,7 @@ config = {
         "layers": [{
                     "type": "simple_feature",
                     "visConfig": {
-                        "opacity": 0.5  # Set the default opacity to 0.5
+                        "opacity": 0.5  # Set the default opacity to 0.3
                     }
                 }
             ]
