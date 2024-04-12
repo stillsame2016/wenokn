@@ -161,7 +161,8 @@ with col2:
                     sparql_query = data[start_index:end_index].strip()
                   else:
                     sparql_query = data
-
+                  sparql_query = sparql_query.replace("\n\n\n", "\n\n")
+                  
                   st.markdown(
                       """
                       <style>
