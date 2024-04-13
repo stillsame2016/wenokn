@@ -257,7 +257,7 @@ with col2:
        
        The string field "alternative_answer" gives your positive and nice answer to the user's input
        if the user is not requesting for data. If the user is asking what data or data types you have,
-       please answer it based on this description:
+       please answer it by summarizing this description:
 
        The WEN-OKN knowledge database contains the following:
           1. locations of buildings, power stations and underground storage tanks in Ohio.
