@@ -260,10 +260,11 @@ with col2:
        please answer it by summarizing this description:
 
        The WEN-OKN knowledge database contains the following:
-          1. locations of buildings, power stations and underground storage tanks in Ohio.
+          1. Locations of buildings, power stations and underground storage tanks in Ohio.
           2. USA counties and their geometries.
-          3. earthquakes.
-          4. rivers.
+          3. USA states and their geometries.
+          4. Earthquakes.
+          5. Rivers.
            
        Please never say "I cannot" or "I could not". 
          
