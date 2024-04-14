@@ -164,6 +164,9 @@ with col2:
                     start_index = data.find("```") + len("```")
                     end_index = data.find("```", start_index)
                     sparql_query = data[start_index:end_index].strip()
+                  elif data.startswith('"') and data.endswith('"'):
+                    # Remove leading and trailing double quotes
+                    sparql_query = sparql_query[1:-1]
                   else:
                     sparql_query = data
                   sparql_query = sparql_query.replace("\n\n\n", "\n\n")
