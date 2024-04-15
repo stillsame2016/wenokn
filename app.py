@@ -106,7 +106,8 @@ config = {
             "pitch": 0,
             "zoom": 6,
         },
-        "blending": "additive"
+        "blending": "additive",
+        'layerBlending': "additive",
     },
 }
 
