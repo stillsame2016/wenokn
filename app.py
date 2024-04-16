@@ -273,6 +273,7 @@ with col2:
           3. USA states and their geometries.
           4. Earthquakes.
           5. Rivers.
+          6. Dams.
            
        Please never say "I cannot" or "I could not". 
          
