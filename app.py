@@ -106,8 +106,9 @@ config = {
             "pitch": 0,
             "zoom": 6,
         },
-        "blending": "additive",
-        'layerBlending': "additive",
+        "visState": {
+          'layerBlending': "additive",
+        }
     },
 }
 
