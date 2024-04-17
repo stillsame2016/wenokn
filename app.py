@@ -200,7 +200,6 @@ with col2:
                   st.session_state.wen_datasets.append(gdf)  
                   st.rerun()
               except Exception as e:
-                raise e
                 st.markdown(f"Encounter an error: {str(e)}. Try again...")
                 tried += 1               
             if tried == max_tries:
