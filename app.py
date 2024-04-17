@@ -66,7 +66,7 @@ def df_to_gdf(df):
   
   column_name_parts = get_column_name_parts(column_names[0])
   column_name_parts.pop()
-  gdf.attrs['data_name'] = " ".join(column_name_parts).capitalize()
+  # gdf.attrs['data_name'] = " ".join(column_name_parts).capitalize()
   
   for column_name in column_names:
     tmp_column_name_parts = get_column_name_parts(column_name)
@@ -188,6 +188,7 @@ with col2:
                   endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
                   df = sparql_dataframe.get(endpoint, sparql_query)                                  
                   gdf = df_to_gdf(df)
+                  gdf.attrs['data_name'] = message
                   # if gdf.shape[0] == 0:
                   #     tried += 1
                   #     continue
