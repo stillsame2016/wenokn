@@ -188,9 +188,9 @@ with col2:
                   endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
                   df = sparql_dataframe.get(endpoint, sparql_query)                                  
                   gdf = df_to_gdf(df)
-                  if gdf.shape[0] == 0:
-                      tried += 1
-                      continue
+                  # if gdf.shape[0] == 0:
+                  #     tried += 1
+                  #     continue
 
                   tried = max_tries + 10
                   st.session_state.requests.append(message)
