@@ -124,7 +124,7 @@ if st.session_state.wen_datasets:
     minx, miny, maxx, maxy = df.total_bounds
     config['config']['mapState']['latitude'] = (miny + maxy) /2
     config['config']['mapState']['longitude'] = (minx + maxx) /2
-    config['config']['mapState']['zoom'] = 6
+    config['config']['mapState']['zoom'] = 5
     
 
 col1, col2 = st.columns([6, 4])
