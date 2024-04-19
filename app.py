@@ -122,8 +122,13 @@ if st.session_state.wen_datasets:
     data_name = st.session_state.requests[idx] 
     map_1.add_data(data=df, name=f'{data_name}')
     minx, miny, maxx, maxy = df.total_bounds
-    bounding_box = [minx, miny, maxx, maxy]
-    map_1.fit_bounds(bounding_box)
+    bounding_box = {
+      "bboxW": minx,  # Western longitude
+      "bboxE": maxx,  # Eastern longitude
+      "bboxN": miny,    # Northern latitude
+      "bboxS": maxy     # Southern latitude
+    }
+    map_1.config_view(bounding_box)
 
 col1, col2 = st.columns([6, 4])
 
