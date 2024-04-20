@@ -196,7 +196,8 @@ with col2:
                   st.code(sparql_query)
                   
                   endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
-                  df = sparql_dataframe.get(endpoint, sparql_query)                                  
+                  df = sparql_dataframe.get(endpoint, sparql_query)   
+                  
                   gdf = df_to_gdf(df)
                   if gdf.shape[0] == 0:
                     # double check
@@ -288,6 +289,7 @@ with col2:
           4. Earthquakes.
           5. Rivers.
           6. Dams.
+          7. Drought zones.
            
        Please never say "I cannot" or "I could not". 
          
