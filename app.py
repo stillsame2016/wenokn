@@ -17,6 +17,8 @@ import sparql_dataframe
 import geopandas as gpd
 from shapely import wkt
 
+import traceback
+
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
@@ -210,6 +212,7 @@ with col2:
                   st.rerun()
               except Exception as e:
                 st.markdown(f"Encounter an error: {str(e)}. Try again...")
+                traceback.print_exc()
                 tried += 1               
             if tried == max_tries:
               st.markdown("We are not able to process your request at this moment. You can try it again now or later.")
