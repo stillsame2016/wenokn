@@ -291,6 +291,7 @@ with col2:
           5. Rivers.
           6. Dams.
           7. Drought zones in 2020, 2021 and 2022.
+          8. Hospitals
            
        Please never say "I cannot" or "I could not". 
          
