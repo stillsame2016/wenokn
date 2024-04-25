@@ -162,7 +162,7 @@ with col2:
             gdf_empty = False
             while tried < max_tries:
               try:
-                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn_llama3?query_text={message}")
+                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn?query_text={message}")
                   data = response.text.replace('\\n', '\n').replace('\\"', '"').replace('\\t', ' ')
                   if data.startswith("\"```sparql"):
                     start_index = data.find("```sparql") + len("```sparql")
