@@ -283,16 +283,6 @@ with col2:
        if the user is not requesting for data. If the user is asking what data or data types you have,
        please answer it by summarizing this description:
 
-       The WEN-OKN knowledge database contains the following:
-          1. Locations of buildings, power stations and underground storage tanks in Ohio.
-          2. USA counties and their geometries.
-          3. USA states and their geometries.
-          4. Earthquakes.
-          5. Rivers.
-          6. Dams.
-          7. Drought zones in 2020, 2021 and 2022.
-          8. Hospitals
-
        The WEN-OKN knowledge database encompasses the following datasets:
           1. Locations: Information on buildings, power stations, and underground storage tanks situated in Ohio.
           2. Counties: Geometric representations of counties across the USA.
