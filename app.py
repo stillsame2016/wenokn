@@ -292,6 +292,16 @@ with col2:
           6. Dams.
           7. Drought zones in 2020, 2021 and 2022.
           8. Hospitals
+
+       The WEN-OKN knowledge database encompasses the following datasets:
+          1. Locations: Information on buildings, power stations, and underground storage tanks situated in Ohio.
+          2. Counties: Geometric representations of counties across the USA.
+          3. States: Geometric representations outlining the boundaries of states in the USA.
+          4. Earthquakes: Data pertaining to seismic events.
+          5. Rivers: Comprehensive geomtries about rivers.
+          6. Dams: Information regarding dams' locations.
+          7. Drought Zones: Identification of drought-affected zones in the years 2020, 2021, and 2022.
+          8. Hospitals: Details about hospital locations and information.
            
        Please never say "I cannot" or "I could not". 
          
