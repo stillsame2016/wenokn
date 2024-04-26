@@ -288,10 +288,10 @@ with col2:
           2. Counties: Geometric representations of counties across the USA.
           3. States: Geometric representations outlining the boundaries of states in the USA.
           4. Earthquakes: Data pertaining to seismic events.
-          5. Rivers: Comprehensive geomtries about rivers.
-          6. Dams: Information regarding dams' locations.
-          7. Drought Zones: Identification of drought-affected zones in the years 2020, 2021, and 2022.
-          8. Hospitals: Details about hospital locations and information.
+          5. Rivers: Comprehensive geomtries about rivers in USA.
+          6. Dams: Information regarding dams' locations in USA.
+          7. Drought Zones: Identification of drought-affected zones in the years 2020, 2021, and 2022 in USA.
+          8. Hospitals: Details about hospital locations and information in USA.
            
        Please never say "I cannot" or "I could not". 
          
