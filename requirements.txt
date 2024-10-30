@@ -1,6 +1,12 @@
 streamlit
-streamlit-keplergl
-google-generativeai
+streamlit_extras
 pandas
-sparql_dataframe
 geopandas
+google-generativeai
+sparql_dataframe
+langchain
+langchain_groq
+langchain-openai
+groq
+datacommons-pandas
+datacommons
