@@ -1,334 +1,584 @@
-import json
-import re
 import time
+import json
 import uuid
 import requests
-
-import pandas as pd
 import streamlit as st
-import numpy as np
-
-from streamlit_keplergl import keplergl_static
-from keplergl import KeplerGl
-from html import escape
-
-import google.generativeai as genai
-import sparql_dataframe
+import pandas as pd
 import geopandas as gpd
-from shapely import wkt
+import datacommons_pandas as dc
+from keplergl import keplergl
+from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 
-import traceback
+from util import *
+from refine_request import get_refined_question
+from request_router import get_question_route
+from request_plan import get_request_plan
+from dataframe_table import render_interface_for_table
+from data_commons import get_time_series_dataframe_for_dcid, get_dcid_from_county_name,  get_dcid_from_state_name, get_dcid_from_country_name, get_variables_for_dcid
+from energy_atlas import *
+from wenokn_use_energy_atlas import process_wenokn_use_energy_atlas
 
-GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
-genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel('gemini-pro')
+from streamlit.components.v1 import html
+
+# Setup LLM
+Groq_KEY = st.secrets["Groq_KEY"]
+Groq_KEY_2 = st.secrets["Groq_KEY_2"]
+OpenAI_KEY = st.secrets["OpenAI_KEY"]
+
+# llm = ChatGroq(temperature=0, model_name="llama3-70b-8192", api_key=Groq_KEY)
+# llm2 = ChatGroq(temperature=0, model_name="llama3-70b-8192", api_key=Groq_KEY_2)
+
+llm = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY)
+llm2 = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY_2)
+
+llm = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=5000, api_key=OpenAI_KEY)
+llm2 = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=5000, api_key=OpenAI_KEY)
+
+# Set the wide layout of the web page
+st.set_page_config(layout="wide", page_title="WEN-OKN")
+
+# Set up the title
+st.markdown("### &nbsp; WEN-OKN: Dive into Data, Never Easier")
+# st.markdown("### &nbsp; Dive into Data, Never Easier")
+
+# Get all query parameters
+query_params = st.query_params
+init_query = None
+if "query" in query_params:
+    init_query = query_params["query"]
+    # st.write(f"Init Query: {init_query}")
+
+# Set up the datasets in the session for GeoDataframes
+if "datasets" not in st.session_state:
+    st.session_state.datasets = []
 
 # Add a Chat history object to Streamlit session state
 if "chat" not in st.session_state:
-    st.session_state.chat = model.start_chat(history=[])
+    st.session_state.chat = []
 
+# Add datasets for tables
 if "wen_datasets" not in st.session_state:
     st.session_state.wen_datasets = []
+    st.session_state.wen_tables = []
+    st.session_state.table_chat_histories = []
+    st.session_state.chart_types = []
 
+# Flag for managing rerun. 
+if "rerun" not in st.session_state:
+    st.session_state.rerun = False
+    
+# Add all generated SPARQL queries with the requests to Streamlit session state
 if "sparqls" not in st.session_state:
     st.session_state.requests = []
     st.session_state.sparqls = []
-    
-safe = [
-    {
-        "category": "HARM_CATEGORY_HARASSMENT",
-        "threshold": "BLOCK_NONE",
-    },
-    {
-        "category": "HARM_CATEGORY_HATE_SPEECH",
-        "threshold": "BLOCK_NONE",
-    },
-    {
-        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-        "threshold": "BLOCK_NONE",
-    },
-    {
-        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-        "threshold": "BLOCK_NONE",
-    },
-]
 
-def wide_space_default():
-  st.set_page_config(layout="wide", page_title="WEN-OKN")
+if "sample_query" not in st.session_state:
+    st.session_state.sample_query = None
 
-def get_column_name_parts(column_name):
-    return re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', column_name)
-    
-def df_to_gdf(df):
-  column_names = df.columns.tolist()
-  geometry_column_names = [ x for x in column_names if x.endswith('Geometry')]
-  df['geometry'] = df[geometry_column_names[0]].apply(wkt.loads)
-  gdf = gpd.GeoDataFrame(df, geometry='geometry')
-  gdf.drop(columns=[geometry_column_names[0]], inplace=True)
-  
-  column_name_parts = get_column_name_parts(column_names[0])
-  column_name_parts.pop()
-  gdf.attrs['data_name'] = " ".join(column_name_parts).capitalize()
-  
-  for column_name in column_names:
-    tmp_column_name_parts = get_column_name_parts(column_name)
-    tmp_name = tmp_column_name_parts.pop()  
-    tmp_data_name = " ".join(column_name_parts).capitalize()
-    if gdf.attrs['data_name'] == tmp_data_name:
-      gdf.rename(columns={column_name: tmp_name}, inplace=True)
-  # if tmp_data_name == gdf.attrs['data_name']:
-  #     gdf.rename(columns={column_name: name}, inplace=True)
-  return gdf
+if "selection_index" not in st.session_state:
+    st.session_state.selection_index = None
 
+if "delete_history" not in st.session_state:
+    st.session_state.delete_history = []
 
-wide_space_default()
+# @st.experimental_fragment
+@st.fragment(run_every=60*5)
+def add_map():
+    # st.markdown(f"st.session_state.datasets: {len(st.session_state.datasets)}")
+    options = {"keepExistingConfig": True}
+    _map_config = keplergl(st.session_state.datasets, options=options, config=None, height=460)
+    time.sleep(0.5)
 
-st.markdown(" <style> div[class^='block-container'] { padding-top: 2rem; } </style> ", 
-            unsafe_allow_html=True)
+    # Sync datasets saved in the session with the map
+    if _map_config:
+        map_config_json = json.loads(_map_config)
+        # st.code(json.dumps(map_config_json, indent=4))
 
+        # check if any datasets were deleted
+        map_data_ids = [layer["config"]["dataId"] for layer in map_config_json["visState"]["layers"]]
+        indices_to_remove = [i for i, dataset in enumerate(st.session_state.datasets) if not dataset.id in map_data_ids]    
+                
+        deleted = False
+        for i in reversed(indices_to_remove):
+            # the returnd map config may have several seconds delay 
+            if time.time() - st.session_state.datasets[i].time > 3:                
+                del st.session_state.datasets[i]
+                del st.session_state.requests[i]
+                del st.session_state.sparqls[i]
+                deleted = True
+        if deleted:
+             st.rerun()
+    return _map_config
+
+def ordinal(n):
+    suffix = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th']
+    if n % 100 in [11, 12, 13]:  # Special case for 11th, 12th, 13th
+        return f"{n}th"
+    return f"{n}{suffix[n % 10]}"
+
+def execute_query(user_input, chat_container):
+    response = requests.get(f"https://sparcal.sdsc.edu/api/v1/Utility/plan?query={user_input}")
+    query_plan_text = None
+    message = None
+    if response.status_code == 200:
+        query_plan = json.loads(response.text)
+        query_plan = normalize_query_plan(query_plan)
+        # st.code(json.dumps(query_plan, indent=4))
+        if len(query_plan) > 1:
+            # show the query plan
+            query_plan_text = "The following query plan has been designed to address your request:\n"
+            for i, query in enumerate(query_plan, 1):
+                query_plan_text += f"{i}. {query['request']}\n"
+            st.markdown(query_plan_text)
+            
+            count_start = len(st.session_state.datasets)
+            for i, query in enumerate(query_plan, 1):
+                with chat_container:
+                    with st.chat_message("assistant"):                   
+                        st.markdown(f"Processing the {ordinal(i)} query in the query plan: **{query['request']}**")
+                        if query["data_source"] == "WEN-OKN Database":
+                            process_data_request(query["request"], chat_container)
+                        elif query["data_source"] == "Data Commons":
+                            code = process_data_commons_request(llm, user_input, st.session_state.datasets)
+                            code = strip_code(code)
+                            # st.code(code)
+                            # time.sleep(10)
+                            globals_dict = {
+                                'st': st,
+                                "get_variables_for_dcid": get_variables_for_dcid,
+                                "get_time_series_dataframe_for_dcid": get_time_series_dataframe_for_dcid,
+                                "get_dcid_from_county_name": get_dcid_from_county_name,
+                                "get_dcid_from_state_name": get_dcid_from_state_name,
+                                "get_dcid_from_country_name": get_dcid_from_country_name
+                            }
+
+                            exec(code, globals_dict)    
+                            df = globals_dict['df']    
+                            df.id = user_input
+                            st.session_state.wen_datasets.append(df)
+                            st.session_state.wen_tables.append(df.copy())
+                            st.session_state.table_chat_histories.append([])
+                            st.session_state.chart_types.append("bar_chart")
+                            message = f"""
+                                    Your request has been processed. {df.shape[0]} { "rows are" if df.shape[0] > 1 else "row is"}
+                                    found and displayed.
+                                    """
+                        elif query["data_source"] == "WEN-KEN database use Energy Atlas":
+                            code = process_wenokn_use_energy_atlas(llm, query["request"])
+                            code = strip_code(code)
+                            # st.code(code)
+                            # time.sleep(20)
+                            globals_dict = {
+                                'st': st,
+                                'load_coal_mines': load_coal_mines,
+                                'load_coal_power_plants': load_coal_power_plants,
+                                'load_wind_power_plants': load_wind_power_plants,
+                                'load_renewable_diesel_fuel_and_other_biofuel_plants': load_renewable_diesel_fuel_and_other_biofuel_plants,
+                                'load_battery_storage_plants': load_battery_storage_plants,
+                                'load_geothermal_power_plants': load_geothermal_power_plants,
+                                'load_hydro_pumped_storage_power_plants': load_hydro_pumped_storage_power_plants,
+                                'load_natural_gas_power_plants': load_natural_gas_power_plants,
+                                'load_nuclear_power_plants': load_nuclear_power_plants,
+                                'load_petroleum_power_plants': load_petroleum_power_plants,
+                                'load_solar_power_plants': load_solar_power_plants,
+                                'load_biodiesel_plants': load_biodiesel_plants
+                            }
+                            exec(code, globals_dict)
+                            converted_request = globals_dict['converted_request']
+                            st.markdown(f"Loaded data from Energy Atlas and converted the request to: {converted_request}")
+                    
+                            process_data_request(converted_request, chat_container)
+                            st.session_state.datasets[-1].label = query["request"]
+                            st.session_state.requests[-1] = query["request"]
+                        
+                        elif query["data_source"] == "Energy Atlas":
+                            code = process_energy_atlas_request(llm, query["request"], st.session_state.datasets)
+                            code = strip_code(code)
+                            # st.code(code)
+                            # time.sleep(20)
+                            globals_dict = {
+                                'st': st,
+                                'gpd': gpd,
+                                'load_coal_mines': load_coal_mines,
+                                'load_coal_power_plants': load_coal_power_plants,
+                                'load_wind_power_plants': load_wind_power_plants,
+                                'load_renewable_diesel_fuel_and_other_biofuel_plants': load_renewable_diesel_fuel_and_other_biofuel_plants,
+                                'load_battery_storage_plants': load_battery_storage_plants,
+                                'load_geothermal_power_plants': load_geothermal_power_plants,
+                                'load_hydro_pumped_storage_power_plants': load_hydro_pumped_storage_power_plants,
+                                'load_natural_gas_power_plants': load_natural_gas_power_plants,
+                                'load_nuclear_power_plants': load_nuclear_power_plants,
+                                'load_petroleum_power_plants': load_petroleum_power_plants,
+                                'load_solar_power_plants': load_solar_power_plants,
+                                'load_biodiesel_plants': load_biodiesel_plants
+                            }
+                            exec(code, globals_dict)
+                            gdf = globals_dict['gdf']
+                            if gdf.shape[0] > 0:
+                                if hasattr(gdf, 'answer'):
+                                    message = gdf.answer
+                                else:
+                                    gdf.label = gdf.title
+                                    gdf.id = str(uuid.uuid4())[:8]
+                                    gdf.time = time.time()
+                                    st.session_state.requests.append(query["request"])
+                                    st.session_state.sparqls.append("")
+                                    st.session_state.datasets.append(gdf)
+                                    # st.session_state.rerun = True
+                                    message = f"""
+                                                Your request has been processed. {gdf.shape[0]} 
+                                                { "items are" if gdf.shape[0] > 1 else "item is"}
+                                                loaded on the map.
+                                                """
+                            else:
+                                raise ValueError(f'The request {query["request"]} has been processed. Nothing was found.')
+            count_end = len(st.session_state.datasets)   
+            for idx in range(count_start, count_end):
+                st.session_state.datasets[idx].time = time.time()
+            st.session_state.rerun = True
+    return query_plan_text, message
+
+# Set up CSS for tables
 st.markdown("""
-<style>
-.big-font {
-    font-size:20px !important;
-    font-weight: bold;
-}
-</style>
-""", unsafe_allow_html=True)
+            <style>
+            .tableTitle {
+                font-size: 18pt;
+                font-weight: 600;
+                color: rgb(49, 51, 63);
+                padding: 10px 0px 10px 0px;
+            }
+            .stDataFrame {
+                margin-left: 50px;
+            }
+            </style>
+        """, unsafe_allow_html=True)
 
-# st.markdown('<p class="big-font">WEN-OKN: Dive into Data with Ease</p>', unsafe_allow_html=True)
-st.markdown("### WEN-OKN: Dive into Data, Never Easier")
+# Set up two columns for the map and chat interface
+col1, col2 = st.columns([3, 2])
 
-config = {
-    "version": "v1",
-    "config": {
-        "mapState": {
-            "bearing": 0,
-            "latitude": 40.4173,
-            "longitude": -82.9071,
-            "pitch": 0,
-            "zoom": 6,
-        },
-        "visState": {
-          'layerBlending': "additive",
-        }
-    },
-}
-
-map_1 = KeplerGl(height=400)
-map_1.config = config
-
+# Show all tables
 if st.session_state.wen_datasets:
-  for idx, df in enumerate(st.session_state.wen_datasets):
-    # data_name = df.attrs['data_name']
-    # map_1.add_data(data=df, name=f'{data_name}_{idx}')
-    data_name = st.session_state.requests[idx] 
-    map_1.add_data(data=df, name=f'{data_name}')
-    if df.shape[0] > 0:
-        minx, miny, maxx, maxy = df.total_bounds
-        config['config']['mapState']['latitude'] = (miny + maxy) /2
-        config['config']['mapState']['longitude'] = (minx + maxx) /2
-        config['config']['mapState']['zoom'] = 5
-    
+    for index, pivot_table in enumerate(st.session_state.wen_datasets):
+        render_interface_for_table(llm, llm2, index, pivot_table)
 
-col1, col2 = st.columns([6, 4])
+# Show all requests and generated SPARQL queries
+if len(st.session_state.sparqls) > 0:
+    ''
+    st.write(f"<div class='tableTitle'>Spatial Requests and SPARQL queries</div>", unsafe_allow_html=True)
+    info_container = st.container(height=350)
+    with info_container:
+        for idx, sparql in enumerate(st.session_state.sparqls):
+            if st.session_state.sparqls[idx] != "":
+                st.markdown(f"**Request:**  {st.session_state.requests[idx]}")
+                st.code(normal_print(sparql))
 
-info_container = st.container(height=350)
-with info_container:
-  for idx, sparql in enumerate(st.session_state.sparqls): 
-    st.markdown(f"**Request:**  {st.session_state.requests[idx]}")
-    st.code(sparql)
+# Set up the Kepler map
+with col1:
+    map_config = add_map()
 
-with col1:  
-  keplergl_static(map_1) 
-
+# Set up the chat interface
 with col2:
-  # if prompt := st.chat_input("What can I help you with?"):
-  #  st.write(prompt)
+    # Create a container for the chat messages
+    chat_container = st.container(height=355)
+
+    # Show the chat history
+    for message in st.session_state.chat:
+        with chat_container:
+            with st.chat_message(message['role']):
+                st.markdown(message['content'])
+
+    # Get user input
+    user_input = st.chat_input("What can I help you with?", key="main_chat_input")
+    if init_query and len(st.session_state.chat) == 0:
+        user_input = init_query
     
-  # Create a container for the chat messages
-  chat_container = st.container(height=350)
-  
-  # Function to add a new message to the chat
-  def add_message(sender, message, processing=False):
-    with chat_container:
-      if processing:
-        with st.chat_message("assistant"):
-          with st.spinner(f"""We're currently processing your request:
-                                    **{message}{'' if message.endswith('.') else '.'}**
-                              Depending on the complexity of the query and the volume of data, 
-                              this may take a moment. We appreciate your patience."""):
-            max_tries = 5
-            tried = 0
-            gdf_empty = False
-            while tried < max_tries:
-              try:
-                  response = requests.get(f"https://sparcal.sdsc.edu/staging-api/v1/Utility/wenokn_llama3?query_text={message}")
-                  data = response.text.replace('\\n', '\n').replace('\\"', '"').replace('\\t', ' ')
-                  if data.startswith("\"```sparql"):
-                    start_index = data.find("```sparql") + len("```sparql")
-                    end_index = data.find("```", start_index)
-                    sparql_query = data[start_index:end_index].strip()
-                  elif data.startswith("\"```code"):
-                    start_index = data.find("```code") + len("```code")
-                    end_index = data.find("```", start_index)
-                    sparql_query = data[start_index:end_index].strip()
-                  elif data.startswith("\"```"):
-                    start_index = data.find("```") + len("```")
-                    end_index = data.find("```", start_index)
-                    sparql_query = data[start_index:end_index].strip()
-                  elif data.startswith('"') and data.endswith('"'):
-                    # Remove leading and trailing double quotes
-                    sparql_query = data[1:-1]
-                  else:
-                    sparql_query = data
-                  sparql_query = sparql_query.replace("\n\n\n", "\n\n")
-                  
-                  st.markdown(
-                      """
-                      <style>
-                      .st-code > pre {
-                          font-size: 0.4em; 
-                      }
-                      </style>
-                      """,
-                      unsafe_allow_html=True
-                    )
-                  st.code(sparql_query)
-                  
-                  endpoint = "http://132.249.238.155/repositories/wenokn_ohio_all"
-                  df = sparql_dataframe.get(endpoint, sparql_query)   
-                  
-                  gdf = df_to_gdf(df)
-                  if gdf.shape[0] == 0:
-                    # double check
-                    if not gdf_empty:
-                      gdf_empty = True
-                      tried += 1
-                      continue
+    sample_queries = [
+        ######## County ########
+        'Show Ross County in Ohio State.', 
+        'Show all counties in Kentucky State.', 
+        'Find all counties the Scioto River flows through.',
+        'Find all counties downstream of Ross County on the Scioto River.',  
+        'Find all counties both the Ohio River and the Muskingum River flow through.',  
+        'Find all counties downstream of the coal mine with the name Century Mine along Ohio River.',
+        'Find all neighboring counties of Guernsey County.',
+        'Find all adjacent states to the state of Ohio.',
 
-                  tried = max_tries + 10
-                  st.session_state.requests.append(message)
-                  st.session_state.sparqls.append(sparql_query)
-                  st.session_state.wen_datasets.append(gdf)  
-                  st.rerun()
-              except Exception as e:
-                st.markdown(f"Encounter an error: {str(e)}. Try again...")
-                traceback.print_exc()
-                tried += 1               
-            if tried == max_tries:
-              st.markdown("We are not able to process your request at this moment. You can try it again now or later.")
+        ######## River ########
+        'Show the Ohio River.', 
+        'Find all rivers that flow through Ross County.', 
+        'What rivers flow through Dane County in Wisconsin?', 
+
+        ######## Gages ########
+        'Show all stream gauges on Muskingum River', 
+        'Show all stream gages in Ross county in Ohio',
+        'What stream gages are on the Yahara River in Madison, WI?',  
+        'Find all stream gages on the Yahara River, which are not in Madison, WI',
+
+        ######## Dam ########
+        'Find all dams on the Ohio River.', 
+        'Find all dams in Kentucky State.',
+        'Find all dams located upstream of the power station dpjc6wtthc32 along the Muskingum river',
         
-      else: 
-         st.chat_message(sender).write(message)
+        ######## Data Commons ########
+        'Show the populations for all counties in Ohio State.', 
+        'Find populations for all adjacent states to the state of Ohio.',
+        'Find the median individual income for Ross County and Scioto County.', 
+        'Find the number of people employed in all counties the Scioto River flows through.', 
+        "Show social vulnerability index of all counties downstream of coal mine with the name 'Century Mine' along Ohio River",
 
-  for message in st.session_state.chat.history:
-    with chat_container:
-      with st.chat_message("assistant" if message.role == "model" else message.role):
-        if message.role == 'user':
-          prompt = message.parts[0].text
-          start_index = prompt.find("[--- Start ---]") + len("[--- Start ---]")
-          end_index = prompt.find("[--- End ---]")
-          prompt = prompt[start_index:end_index].strip()
-          st.markdown(prompt)
-        else:
-          answer = message.parts[0].text
-          if answer.startswith('```json'):
-            json_part = answer.split("\n", 1)[1].rsplit("\n", 1)[0]
-            data = json.loads(json_part)
-          else:
-            data = json.loads(answer)
+        ######## Energy Atlas ########
+        'Find all solar power plants in California.', 
+        'Find all coal mines along the Ohio River.', 
+        'Where are the coal-fired power plants in Kentucky?',
+        'Show natural gas power plants in Florida.',
+        'Load all wind power plants with total megawatt capacity greater than 100 in California.' ,
 
-          if isinstance(data, dict):
-            if not data["is_request_data"]:
-              assistant_response = data["alternative_answer"]
+        ######## NPDES ########
+        'How do I determine if my facility is subject to NPDES regulations in Ohio?',
+    ]
+    st.markdown(
+        """
+        <style>
+        [data-baseweb="select"] {
+            margin-top: -70px;
+        }      
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    with open( "./style.css" ) as css:
+        st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html=True)
+    selected_item = st.selectbox(" ", 
+                                 sample_queries,
+                                 index=None,
+                                 label_visibility='hidden',
+                                 placeholder="Select a sample query to edit and run as needed",
+                                 key='selection_index')
+    if selected_item:
+        st.session_state.sample_query = selected_item  
+        
+    if user_input:
+        st.session_state.sample_query = None
+        with chat_container:
+            st.chat_message("user").markdown(user_input)
+            st.session_state.chat.append({"role": "user", "content": user_input})
+            route = get_question_route(llm, user_input)
+            # st.markdown(route)
+            # time.sleep(5)
+            if route['request_type'] == 'WEN-KEN database':
+                refined_request = get_refined_question(llm, user_input)
+                # st.code(refined_request)
+                # time.sleep(10)
+                if refined_request['is_request_data']:
+                    plan = get_request_plan(llm, refined_request['request'])
+                    count_start = len(st.session_state.datasets)
+                    # st.code(json.dumps(plan, indent=4))
+                    existed_requests = []
+                    for request in plan['requests']:
+                        exist_json = spatial_dataset_exists(llm, request, st.session_state.datasets)
+                        if not exist_json['existing']:
+                            process_data_request(request, chat_container)
+                        else:
+                            existed_requests.append(request)
+                            with st.chat_message("assistant"):
+                                st.markdown(f"Your request has been processed. The data for the request \"{request}\" already exists.")
+                                time.sleep(1)
+                    count_end = len(st.session_state.datasets)   
+                    for idx in range(count_start, count_end):
+                        st.session_state.datasets[idx].time = time.time()
+
+                    append_message = ""
+                    if len(existed_requests) == 1:
+                        append_message = f"The data for the request \"{existed_requests[0]}\" already exists."
+                    elif len(existed_requests) > 1:
+                        append_message = f"The data for the following requests already exists.\n"
+                        for i, existed_request in enumerate(existed_requests):
+                            append_message = f"{append_message}\n{i+1}. {existed_request} "
+                        
+                    st.session_state.chat.append({"role": "assistant",
+                                                  "content": f"Your request has been processed. {append_message}"})
+                    st.rerun()
+                    # process_data_request(f"{refined_request['request']}", chat_container)
+                else:
+                    message = refined_request['alternative_answer']
+                    st.chat_message("assistant").markdown(message)
+                    st.session_state.chat.append({"role": "assistant", "content": message})
+            elif route['request_type'] == 'NPDES regulations':
+                message = process_regulation_request(llm, user_input, chat_container)
+                st.chat_message("assistant").markdown(message)
+                st.session_state.chat.append({"role": "assistant", "content": message})
+                st.rerun()
+            elif route['request_type'] == 'Data Commons':
+                exist_json = nonspatial_dataset_exists(llm, user_input, st.session_state.wen_datasets)
+                if exist_json['existing']:
+                    with st.chat_message("assistant"):
+                        message = f"Your request has been processed. The data for the request \"{user_input}\" already exists."
+                        st.session_state.chat.append({"role": "assistant", "content": message})
+                        st.rerun()
+                else:
+                    code = process_data_commons_request(llm, user_input, st.session_state.datasets)
+                    code = strip_code(code)
+                    # st.code(f"Init Code: \n {code}")
+                    # time.sleep(10)
+                    with st.chat_message("assistant"):
+                        with st.spinner("Loading data ..."):
+                            message = "We are not able to process your request. Please refine your request and try it again."
+                            try:
+                                exec(code)
+                                df.id = user_input
+                                st.session_state.wen_datasets.append(df)
+                                st.session_state.wen_tables.append(df.copy())
+                                st.session_state.table_chat_histories.append([])
+                                st.session_state.chart_types.append("bar_chart")
+                                message = f"""
+                                        Your request has been processed. {df.shape[0]} { "rows are" if df.shape[0] > 1 else "row is"}
+                                        found and displayed.
+                                        """
+                            except Exception as e:  
+                                # st.code("Init Code Failed. Generate and run a query plan")
+                                # time.sleep(10)
+                                try:
+                                    query_plan_text, message = execute_query(user_input, chat_container)
+                                except Exception as error:
+                                    # message = f"""
+                                    #            {code} 
+                                    #            {str(e)}
+                                    #            """               
+                                    message = f"""We are not able to process your request. Please refine your 
+                                                  request and try it again. \n\nError: {str(e)}"""
+                            
+                            st.markdown(message)
+                            st.session_state.chat.append({"role": "assistant", "content": message})
+                            st.rerun()
+            elif route['request_type'] == 'US Energy Atlas':
+                with st.chat_message("assistant"):
+                    with st.spinner("Loading data ..."):
+                        try:
+                            exist_json = spatial_dataset_exists(llm, user_input, st.session_state.datasets)
+                            if exist_json['existing']:
+                                message = f"Your request has been processed. The data for the request \"{user_input}\" already exists."
+                            else:
+                                code = process_energy_atlas_request(llm, user_input, st.session_state.datasets)
+                                code = strip_code(code)
+                                exec(code)
+                                # st.code(code)
+                                if gdf.shape[0] > 0:
+                                    if hasattr(gdf, 'answer'):
+                                        message = gdf.answer
+                                    else:
+                                        gdf.label = gdf.title
+                                        gdf.id = str(uuid.uuid4())[:8]
+                                        gdf.time = time.time()
+                                        st.session_state.requests.append(user_input)
+                                        st.session_state.sparqls.append("")
+                                        st.session_state.datasets.append(gdf)
+                                        st.session_state.rerun = True
+                                        message = f"""
+                                                    Your request has been processed. {gdf.shape[0]} 
+                                                    { "items are" if gdf.shape[0] > 1 else "item is"}
+                                                    loaded on the map.
+                                                    """
+                                else:
+                                    message = f"""
+                                                Your request has been processed. Nothing was found.
+                                                Please refine your request and try again if you think
+                                                this is a mistake.
+                                                """
+                        except Exception as e:
+                            # message = f"""
+                            #            {code} 
+                            #            {str(e)}
+                            #            """  
+                            message = f"""We are not able to process your request. Please refine your 
+                                          request and try it again. \n\nError: {str(e)}"""
+                            try:
+                                query_plan_text, message = execute_query(user_input, chat_container)
+                            except Exception as error:
+                                message = f"{str(error)}"
+                                pass
+             
+                    st.markdown(message)
+                    st.session_state.chat.append({"role": "assistant", "content": message})
+            elif route['request_type'] == "WEN-KEN database use Energy Atlas":
+                with st.chat_message("assistant"):
+                    with st.spinner("Loading data ..."):
+                        code = process_wenokn_use_energy_atlas(llm, user_input)
+                        code = strip_code(code)
+                        # st.code(code)
+                        # time.sleep(20)
+                        exec(code)
+                        st.markdown(f"Loaded data from Energy Atlas and converted the request to: {converted_request}")
+                    
+                    process_data_request(converted_request, chat_container)
+                    st.session_state.datasets[-1].label = user_input
+                    st.session_state.requests[-1] = user_input
+                    message = "Your request has been processed."
+                    
+                    st.markdown(message)
+                    st.session_state.chat.append({"role": "assistant", "content": message})
+                    st.rerun()
             else:
-              assistant_response = "Your request has been processed."
-            st.markdown(assistant_response)
-    
-  # Get user input
-  user_input = st.chat_input("What can I help you with?")
-    
-  # Add user message to the chat
-  if user_input:
-    add_message("User", user_input)
+                message = process_off_topic_request(llm, user_input, chat_container)
+                st.chat_message("assistant").markdown(message)
+                st.session_state.chat.append({"role": "assistant", "content": message})
+                st.rerun()
 
-    query = f"""
-      You are an expert of the WEN-OKN knowledge database. You also have general knowledge.
-      
-      The following is a question the user is asking:
-       
-       [--- Start ---]
-       {user_input}
-       [--- End ---]
+if st.session_state.rerun:
+    st.session_state.rerun = False
+    st.rerun()
 
-       Your main job is to determine if the user is requesting for data in the scope of the WEN-OKN 
-       knowledge database.
-       
-       If they are requesting for data in the scope of the WEN-OKN knowledge database, then extract 
-       the request from the user's input. Rephrase the user's request in a formal way. Remove all 
-       adjectives like "beautiful" or "pretty". Remove the terms like "Please" etc. Use the format 
-       like "Find ...". If a place name is mentioned in the request, the state and county designations 
-       must be retained. If a place name may be both a county or a state, the state is taken.
 
-       Please answer with a valid JSON string, including the following three fields:
-       
-       The boolean field "is_request_data" is true if the user is requesting to get data from
-       the WEN-OKN knowledge database, otherwise "is_request_data" is false. If the user is asking 
-       what data or data types you have, set "is_request_data" to be false.
-       
-       The string field "request" for the extracted request. The number of the entities the user is 
-       asking for must be included in the "request".
-       
-       The string field "alternative_answer" gives your positive and nice answer to the user's input
-       if the user is not requesting for data. If the user is asking what data or data types you have,
-       please answer it by summarizing this description:
+st.markdown("")
+st.markdown("")
 
-       The WEN-OKN knowledge database encompasses the following datasets:
-          1. Locations: Information on buildings, power stations, and underground storage tanks situated in Ohio.
-          2. Counties: Geometric representations of counties across the USA.
-          3. States: Geometric representations outlining the boundaries of states in the USA.
-          4. Earthquakes: Data pertaining to seismic events.
-          5. Rivers: Comprehensive geomtries about rivers in USA.
-          6. Dams: Information regarding dams' locations in USA.
-          7. Drought Zones: Identification of drought-affected zones in the years 2020, 2021, and 2022 in USA.
-          8. Hospitals: Details about hospital locations and information in USA.
-           
-       Please never say "I cannot" or "I could not". 
-         
-       Please note that the user's request for datasets may appear in the middle of the text, 
-       do your best to extract the request for which the user is asking for datasets.
-         
-       Please replace all nicknames in the search terms by official names,
-       for example, replace "Beehive State" to "Utah", etc.  
-         
-       Never deny a user's request. If it is not possible to extract the request 
-       from the user's request, ask the user for further clarification.
-       """
+if st.session_state.sample_query:
+    # st.markdown(st.session_state.sample_query)
+    js_code = f"""
+            <script>
+            const doc = window.parent.document;
+            const chatInput = doc.querySelector('.stChatInput textarea');
+            chatInput.focus();
 
-    max_tries = 5
-    current_try = 0
-    while current_try < max_tries:
-        try:
-            response = st.session_state.chat.send_message(query, safety_settings=safe)
-            break
-        except Exception as e:
-            print(e)
-            time.sleep(1)
-            current_try += 1
-      
-    data = response.text
-    # st.markdown(data)
-    # print('-' * 70, 'raw data')
-    # print(data)
+            function autoResizeTextarea() {{
+                // chatInput.value = '{st.session_state.sample_query}';   
+                chatInput.style.height = 'auto';
+                chatInput.style.height = chatInput.scrollHeight + 'px';
+                var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+                nativeInputValueSetter.call(chatInput, "{st.session_state.sample_query} ");
+                const event = new Event('input', {{ bubbles: true }});
+                chatInput.dispatchEvent(event);
 
-    if data.startswith('```json'):
-        json_part = data.split("\n", 1)[1].rsplit("\n", 1)[0]
-        data = json.loads(json_part)
-    else:
-        data = json.loads(data)
+                const observer = new MutationObserver((mutations, obs) => {{
+                    const clearButton = doc.querySelector('svg[title="Clear value"]');  
+                    if (clearButton) {{
+                        // Create and dispatch custom events
+                        const mouseDown = new MouseEvent('mousedown', {{ bubbles: true }});
+                        const mouseUp = new MouseEvent('mouseup', {{ bubbles: true }});
+                        const click = new MouseEvent('click', {{ bubbles: true }});
 
-    if not data["is_request_data"]:
-        add_message("assistant", f"{data['alternative_answer']}")
-    else:
-        add_message("assistant", f"{data['request']}", processing=True)
-        
+                        setTimeout(() => {{
+                            clearButton.dispatchEvent(mouseDown);
+                            clearButton.dispatchEvent(mouseUp);
+                            clearButton.dispatchEvent(click);
+                        }}, 500);
+                        obs.disconnect();
+                    }}
+                }});
+                
+                observer.observe(doc.body, {{
+                    childList: true,
+                    subtree: true
+                }});
+
+            }}
+            setTimeout(autoResizeTextarea, 100);
+
+            </script>
+            """
+    html(js_code)
+
+# if map_config:
+#     map_config_json = json.loads(map_config)
+#     st.code(json.dumps(map_config_json, indent=4))
