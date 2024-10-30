@@ -25,6 +25,9 @@ from streamlit.components.v1 import html
 Groq_KEY = st.secrets["Groq_KEY"]
 Groq_KEY_2 = st.secrets["Groq_KEY_2"]
 OpenAI_KEY = st.secrets["OpenAI_KEY"]
+SDSC_KEY = st.secrets["SDSC_KEY"]
+
+st.code(SDSC_KEY)
 
 # llm = ChatGroq(temperature=0, model_name="llama3-70b-8192", api_key=Groq_KEY)
 # llm2 = ChatGroq(temperature=0, model_name="llama3-70b-8192", api_key=Groq_KEY_2)
