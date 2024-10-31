@@ -1,29 +1,22 @@
+from pydantic import BaseModel
+from langchain_core.language_models import LLM
+from typing import Optional, List, Any
 import requests
-from typing import Any, Optional, List, Mapping
-from langchain_core.callbacks.manager import CallbackManagerForLLMRun
-from langchain_core.language_models.llms import LLM
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import PromptTemplate
-from pydantic.v1 import Field
-
 
 class CustomSDSCLLM(LLM):
-    api_key: str = Field(..., description="API key for authentication")
-    model: str = Field(..., description="Model identifier")
-    base_url: str = Field(
-        default="https://sdsc-llm-openwebui.nrp-nautilus.io/api/chat/completions",
-        description="Base URL for the API"
-    )
+    api_key: str
+    model: str
+    base_url: str
 
     class Config:
-        """Configuration for this pydantic object."""
         arbitrary_types_allowed = True
 
-    def __init__(self, **data):
-        super().__init__(**data)
-        # Ensure base_url is stripped of any leading/trailing whitespace
-        self.base_url = self.base_url.strip()
-    
+    def __init__(self, api_key: str, model: str,
+                 base_url: str = "https://sdsc-llm-openwebui.nrp-nautilus.io/api/chat/completions"):
+        self.api_key = api_key
+        self.model = model
+        self.base_url = base_url.strip()  # Ensure no extra whitespace
+
     @property
     def _llm_type(self) -> str:
         return "custom_sdsc_llm"
@@ -32,7 +25,7 @@ class CustomSDSCLLM(LLM):
             self,
             prompt: str,
             stop: Optional[List[str]] = None,
-            run_manager: Optional[CallbackManagerForLLMRun] = None,
+            run_manager: Optional[Any] = None,
             **kwargs: Any,
     ) -> str:
         headers = {
@@ -61,8 +54,3 @@ class CustomSDSCLLM(LLM):
             return response_data['choices'][0]['message']['content'].strip()
         else:
             raise Exception(f"Request failed with status {response.status_code}: {response.text}")
-
-    @property
-    def _identifying_params(self) -> Mapping[str, Any]:
-        """Get the identifying parameters."""
-        return {"model": self.model, "base_url": self.base_url}
