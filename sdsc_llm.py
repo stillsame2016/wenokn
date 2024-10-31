@@ -13,7 +13,8 @@ class CustomSDSCLLM(LLM):
     base_url: str = Field(
         default="https://sdsc-llm-openwebui.nrp-nautilus.io/api/chat/completions",
         description="Base URL for the API"
-    )
+    ).strip()
+
 
     class Config:
         """Configuration for this pydantic object."""
