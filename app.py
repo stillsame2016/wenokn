@@ -9,6 +9,7 @@ import datacommons_pandas as dc
 from keplergl import keplergl
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
+from sdsc_llm import CustomSDSCLLM
 
 from util import *
 from refine_request import get_refined_question
@@ -27,16 +28,13 @@ Groq_KEY_2 = st.secrets["Groq_KEY_2"]
 OpenAI_KEY = st.secrets["OpenAI_KEY"]
 SDSC_KEY = st.secrets["SDSC_KEY"]
 
-llm = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY)
+# llm = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY)
 llm2 = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY_2)
 
 # llm = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=5000, api_key=OpenAI_KEY)
 # llm2 = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=5000, api_key=OpenAI_KEY)
 
-# llm = ChatOpenAI(model="meta-llama/Meta-Llama-3.1-70B-Instruct",
-#                  openai_api_key=SDSC_KEY,
-#                  openai_api_base="https://sdsc-llm-api.nrp-nautilus.io/",
-#                  temperature=0)
+llm = CustomSDSCLLM(api_key=SDSC_KEY, model="meta-llama/Meta-Llama-3.1-70B-Instruct")
 
 # Set the wide layout of the web page
 st.set_page_config(layout="wide", page_title="WEN-OKN")
