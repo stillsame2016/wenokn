@@ -13,13 +13,17 @@ class CustomSDSCLLM(LLM):
     base_url: str = Field(
         default="https://sdsc-llm-openwebui.nrp-nautilus.io/api/chat/completions",
         description="Base URL for the API"
-    ).strip()
-
+    )
 
     class Config:
         """Configuration for this pydantic object."""
         arbitrary_types_allowed = True
 
+    def __init__(self, **data):
+        super().__init__(**data)
+        # Ensure base_url is stripped of any leading/trailing whitespace
+        self.base_url = self.base_url.strip()
+    
     @property
     def _llm_type(self) -> str:
         return "custom_sdsc_llm"
