@@ -1,21 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from langchain_core.language_models import LLM
 from typing import Optional, List, Any
 import requests
 
-class CustomSDSCLLM(LLM):
-    api_key: str
-    model: str
-    base_url: str
+class CustomSDSCLLM(LLM, BaseModel):
+    api_key: str = Field(..., description="API key for authentication")
+    model: str = Field(..., description="Model identifier")
+    base_url: str = Field(
+        default="https://sdsc-llm-openwebui.nrp-nautilus.io/api/chat/completions",
+        description="Base URL for the API"
+    )
 
     class Config:
         arbitrary_types_allowed = True
-
-    def __init__(self, api_key: str, model: str,
-                 base_url: str = "https://sdsc-llm-openwebui.nrp-nautilus.io/api/chat/completions"):
-        self.api_key = api_key
-        self.model = model
-        self.base_url = base_url.strip()  # Ensure no extra whitespace
 
     @property
     def _llm_type(self) -> str:
@@ -47,7 +44,7 @@ class CustomSDSCLLM(LLM):
             "stream": False
         }
 
-        response = requests.post(self.base_url, headers=headers, json=payload)
+        response = requests.post(self.base_url.strip(), headers=headers, json=payload)
 
         if response.status_code == 200:
             response_data = response.json()
