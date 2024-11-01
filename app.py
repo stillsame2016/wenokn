@@ -29,12 +29,13 @@ OpenAI_KEY = st.secrets["OpenAI_KEY"]
 SDSC_KEY = st.secrets["SDSC_KEY"]
 
 # llm = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY)
-llm2 = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY_2)
+# llm2 = ChatGroq(temperature=0, model_name="llama-3.1-70b-versatile", api_key=Groq_KEY_2)
 
 # llm = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=5000, api_key=OpenAI_KEY)
 # llm2 = ChatOpenAI(model="gpt-4o", temperature=0, max_tokens=5000, api_key=OpenAI_KEY)
 
 llm = CustomSDSCLLM(api_key=SDSC_KEY, model="meta-llama/Meta-Llama-3.1-70B-Instruct")
+llm2 = CustomSDSCLLM(api_key=SDSC_KEY, model="meta-llama/Meta-Llama-3.1-70B-Instruct")
 
 # Set the wide layout of the web page
 st.set_page_config(layout="wide", page_title="WEN-OKN")
